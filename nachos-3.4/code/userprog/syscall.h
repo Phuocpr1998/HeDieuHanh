@@ -29,7 +29,7 @@
 #define SC_Close	8
 #define SC_Fork		9
 #define SC_Yield	10
-#define SC_PRINTF	11
+#define SC_PRINTF       11
 
 #ifndef IN_ASM
 
@@ -126,7 +126,7 @@ void Fork(void (*func)());
 void Yield();		
 
 //Ham hien thi chuoi ra man hinh
-void printf(char * str);
+void printf(char *str);
 
 
 #endif /* IN_ASM */

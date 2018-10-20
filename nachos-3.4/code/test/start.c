@@ -58,6 +58,23 @@ printf:
 	j $31
 	.end printf
 
+	.globl Close
+	.ent Close
+Close:
+	addiu $2, $0, SC_Close
+	syscall
+	j $31
+	.end Close
+
+
+	.globl Join
+	.ent Join
+Join:
+	addiu $2, $0, SC_Join
+	syscall
+	j $31
+	.end Join
+
 	.globl CreateFile
 	.ent CreateFile
 CreateFile:
@@ -82,14 +99,6 @@ Exec:
 	j	$31
 	.end Exec
 
-	.globl Join
-	.ent	Join
-Join:
-	addiu $2,$0,SC_Join
-	syscall
-	j	$31
-	.end Join
-
 	.globl Open
 	.ent	Open
 Open:
@@ -113,14 +122,6 @@ Write:
 	syscall
 	j	$31
 	.end Write
-
-	.globl Close
-	.ent	Close
-Close:
-	addiu $2,$0,SC_Close
-	syscall
-	j	$31
-	.end Close
 
 	.globl Fork
 	.ent	Fork

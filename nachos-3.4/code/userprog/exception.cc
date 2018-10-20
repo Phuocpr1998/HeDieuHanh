@@ -25,6 +25,7 @@
 #include "system.h"
 #include "syscall.h"
 
+
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
 
@@ -44,7 +45,6 @@ char * User2System(int virtAddr, int limit)
                         break;
         }
         return kernelBuf;
-
 }
 
 //Ham copy data o vung kernel sang vung user
@@ -138,6 +138,8 @@ void
 ExceptionHandler(ExceptionType which)
 {
 	int type = machine->ReadRegister(2);
+	if (gSynchConsole == NULL)
+	  gSynchConsole = new SynchConsole();
 
 	switch (which)
 	{
@@ -154,45 +156,51 @@ ExceptionHandler(ExceptionType which)
 		case SC_PRINTF:
 		{
 			int virtAddr = machine->ReadRegister(4);
+			printf("%d",virtAddr);
 			char * str = User2System(virtAddr, 256);
-			SynchConsole * synchConsole;
-			synchConsole->Write(str, 256);
-			delete[] str;
+			if (str != NULL)
+			{
+			  gSynchConsole->Write(str, 256);
+			  delete[] str;			
+			}
 			break;
 		}
 		default:
-		  DEBUG('e', "Shutdown, don't have type in systemcall.\n");
+		  DEBUG('d', "Shutdown, don't have type in systemcall.\n");
 			interrupt->Halt();
 			break;
 		}
-
+		machine->registers[PrevPCReg] = machine->registers[PCReg];
+		machine->registers[PCReg] = machine->registers[NextPCReg];
+		machine->registers[NextPCReg] += 4;
 		break;
 	case PageFaultException:
-		DEBUG('e', "Shutdown, Have a PageFaultException.\n");
+                
+		DEBUG('d', "Shutdown, Have a PageFaultException.\n");
 		interrupt->Halt();
 		break;
 	case ReadOnlyException:
-		DEBUG('e', "Shutdown, Have a ReadOnlyException.\n");
+		DEBUG('d', "Shutdown, Have a ReadOnlyException.\n");
 		interrupt->Halt();
 		break;
 	case BusErrorException:
-		DEBUG('e', "Shutdown, Have a BusErrorException.\n");
+		DEBUG('d', "Shutdown, Have a BusErrorException.\n");
 		interrupt->Halt();
 		break;
 	case AddressErrorException:
-		DEBUG('e', "Shutdown, Have a AddressErrorException.\n");
+		DEBUG('d', "Shutdown, Have a AddressErrorException.\n");
 		interrupt->Halt();
 		break;
 	case OverflowException:
-		DEBUG('e', "Shutdown, Have a OverflowException.\n");
+		DEBUG('d', "Shutdown, Have a OverflowException.\n");
 		interrupt->Halt();
 		break;
 	case IllegalInstrException:
-		DEBUG('e', "Shutdown, Have a IllegalInstrException.\n");
+		DEBUG('d', "Shutdown, Have a IllegalInstrException.\n");
 		interrupt->Halt();
 		break;
 	case NumExceptionTypes:
-		DEBUG('e', "Shutdown, Have a NumExceptionTypes.\n");
+		DEBUG('d', "Shutdown, Have a NumExceptionTypes.\n");
 		interrupt->Halt();
 		break;
 	default:

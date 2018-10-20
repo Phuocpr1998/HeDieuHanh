@@ -4,15 +4,13 @@
 
 int main()
 {
-	int len;
-	char fileName[MAXLEN + 1];
-	if(CreateFile("text.txt") == -1)
+	if(CreateFile("text.txt") != -1)
 	{
-		printf("Tao file thanh cong");	
+		printf("Tao file thanh cong\n");	
 	}
 	else
 	{
-		printf("Tao file that bai");
+		printf("Tao file that bai\n");
 	}
- return 0;
+	return 0;
 }
