@@ -4,11 +4,19 @@
 
 int main()
 {
-	if (openFile("console", 0) != -1) {
-		printf("Mo file thanh cong");
+
+	if (openFile("text.txt", 0) != -1) {
+		printf("Mo file thanh cong\n");
 	}
 	else {
-		printf("Mo file that bai");
+		printf("Mo file that bai\n");
+	}
+	
+	if (closeFile(2) != -1) {
+		printf("Dong file thanh cong\n");
+	}
+	else {
+		printf("Dong file that bai\n");
 	}
 	return 0;
 }

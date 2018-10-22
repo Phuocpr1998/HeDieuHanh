@@ -31,6 +31,7 @@
 #define SC_Yield	10
 #define SC_PRINTF       11
 #define SC_OPENFILE		12
+#define SC_CLOSEFILE	13
 
 #ifndef IN_ASM
 
@@ -94,6 +95,9 @@ int CreateFile(char *name);
 // open file
 OpenFileId openFile(char *name, int type);
 
+//close file
+int closeFile(OpenFileId id);
+
 /* Open the Nachos file "name", and return an "OpenFileId" that can 
  * be used to read and write to the file.
  */
@@ -111,7 +115,7 @@ void Write(char *buffer, int size, OpenFileId id);
 int Read(char *buffer, int size, OpenFileId id);
 
 /* Close the file, we're done reading and writing to it. */
-void Close(OpenFileId id);
+void CloseFile(OpenFileId id);
 
 
 

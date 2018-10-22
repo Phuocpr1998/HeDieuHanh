@@ -77,3 +77,5 @@ openfile.o: openfile.c
 openfile: openfile.o start.o
 	$(LD) $(LDFLAGS) start.o openfile.o -o openfile.coff
 	../bin/coff2noff openfile.coff openfile
+
+

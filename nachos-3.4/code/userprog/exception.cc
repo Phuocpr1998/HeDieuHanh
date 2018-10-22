@@ -131,6 +131,21 @@ void open() {
 }
 
 
+void closeFile() {
+	int id = machine->ReadRegister(4); //lay id
+	if (arrayID[id] == NULL) { //neu file da duoc dong hoac chua mo
+		machine->WriteRegister(2, -1);
+	}
+	else {
+		FileCustom* temp = arrayID[id];
+		if (id > 2) {
+			delete temp->file;
+		}
+		delete temp;
+		machine->WriteRegister(2, 1);
+	}
+}
+
 
 void Create()
 {
@@ -217,6 +232,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_OPENFILE:
 			open();
+			break;
+		case SC_CLOSEFILE:
+			closeFile();
 			break;
 		case SC_PRINTF:
 		{

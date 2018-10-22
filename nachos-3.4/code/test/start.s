@@ -66,6 +66,14 @@ openFile:
 	j $31
 	.end openFile
 
+	.globl closeFile
+	.ent closeFile
+closeFile:
+	addiu $2, $0, SC_CLOSEFILE
+	syscall
+	j $31
+	.end closeFile
+
 	.globl Close
 	.ent Close
 Close:
