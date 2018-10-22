@@ -24,6 +24,16 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#include "openfile.h"
+#define MAXLENGHT 10
+
+
+struct FileCustom {
+	OpenFile* file;
+	int type;
+};
+
+FileCustom* arrayID[10];
 
 
 //Ham copy vung data tu user space sang kernel space
@@ -68,6 +78,58 @@ int System2User(int virtAddr, int len, char *buffer)
 
         return i;
 }
+
+
+void open() {
+	int virtAddr, type = 0;
+	char *fileName;
+	DEBUG('a', "\nSC_OpenFile...");
+	DEBUG('a', "\nReading virtual address of filename");
+	virtAddr = machine->ReadRegister(4);
+	DEBUG('a', "\nReading filename.");
+	fileName = User2System(virtAddr, MaxFileLength + 1);
+	if (fileName == NULL) {
+		printf("\nNot enough memory in system");
+		DEBUG('a', "\nNot enough memory in system");
+		//tra ve gia tri loi -1
+		machine->WriteRegister(2, -1);
+		delete[] fileName; // xoa vung nho da cap phat trong ham User2System
+		return; // ket thuc ham
+	}
+	type = machine->ReadRegister(5);
+	DEBUG('a', "\nReading type.");
+
+	if (strcmp(fileName, "console") == 0) { //neu la console
+		FileCustom* fileCustom = new FileCustom;
+		arrayID[type] = fileCustom;
+		machine->WriteRegister(2, type);
+		return;
+	}
+	//neu la file
+	OpenFile* file = fileSystem->Open(fileName);
+
+	if (file != NULL) { //file != null
+		int index = -1;
+		for (int i = 2; i < MAXLENGHT; i++) { //tim vi tri rong trong mang neu het vi tri tra ve loi
+			if (arrayID[i] == NULL) {
+				index = i;
+				break;
+			}
+		}
+		if (index != -1) { //neu co vi tri tra ve fileid = index
+			FileCustom* fileCustom = new FileCustom;
+			fileCustom->file = file;
+			fileCustom->type = type;
+			arrayID[index] = fileCustom;
+		}
+		machine->WriteRegister(2, index);
+	}
+	else {
+		machine->WriteRegister(2, -1);
+	}
+	delete[] fileName;
+}
+
 
 
 void Create()
@@ -152,6 +214,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_CreateFile:
 			Create();
+			break;
+		case SC_OPENFILE:
+			open();
 			break;
 		case SC_PRINTF:
 		{

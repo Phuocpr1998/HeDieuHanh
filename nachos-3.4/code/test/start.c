@@ -58,6 +58,14 @@ printf:
 	j $31
 	.end printf
 
+	.globl openFile
+	.ent openFile
+openFile:
+	addiu $2, $0, SC_OPENFILE
+	syscall
+	j $31
+	.end openFile
+
 	.globl Close
 	.ent Close
 Close:

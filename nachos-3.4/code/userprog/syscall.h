@@ -30,6 +30,7 @@
 #define SC_Fork		9
 #define SC_Yield	10
 #define SC_PRINTF       11
+#define SC_OPENFILE		12
 
 #ifndef IN_ASM
 
@@ -89,6 +90,9 @@ typedef int OpenFileId;
 #define MaxFileLength 32
 /* Create a Nachos file, with "name" */
 int CreateFile(char *name);
+
+// open file
+OpenFileId openFile(char *name, int type);
 
 /* Open the Nachos file "name", and return an "OpenFileId" that can 
  * be used to read and write to the file.
