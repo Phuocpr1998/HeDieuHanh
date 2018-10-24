@@ -39,6 +39,9 @@ FileCustom* arrayID[10];
 void Create();
 void closeFile();
 void open();
+void readFile();
+void writeFile();
+
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
 char * User2System(int virtAddr, int limit);
@@ -74,8 +77,6 @@ void
 ExceptionHandler(ExceptionType which)
 {
 	int type = machine->ReadRegister(2);
-	if (gSynchConsole == NULL)
-	  gSynchConsole = new SynchConsole();
 
 	switch (which)
 	{
@@ -94,6 +95,12 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_CloseFile:
 			closeFile();
+			break;
+		case SC_WriteFile:
+			readFile();
+			break;
+		case SC_ReadFile:
+			writeFile();
 			break;
 		case SC_Printf:
 		{
@@ -117,7 +124,7 @@ ExceptionHandler(ExceptionType which)
 		machine->registers[NextPCReg] += 4;
 		break;
 	case PageFaultException:
-                
+				
 		DEBUG('d', "Shutdown, Have a PageFaultException.\n");
 		interrupt->Halt();
 		break;
@@ -155,7 +162,6 @@ ExceptionHandler(ExceptionType which)
 
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
-
 char * User2System(int virtAddr, int limit)
 {
 	int oneChar;
@@ -194,16 +200,18 @@ int System2User(int virtAddr, int len, char *buffer)
 
 	return i;
 }
-
-
+/////
 void open() {
 	int virtAddr, type = 0;
 	char *fileName;
+
 	DEBUG('a', "\nSC_OpenFile...");
 	DEBUG('a', "\nReading virtual address of filename");
 	virtAddr = machine->ReadRegister(4);
 	DEBUG('a', "\nReading filename.");
 	fileName = User2System(virtAddr, MaxFileLength + 1);
+	
+
 	if (fileName == NULL) {
 		printf("\nNot enough memory in system");
 		DEBUG('a', "\nNot enough memory in system");
@@ -240,8 +248,7 @@ void open() {
 	}
 	delete[] fileName;
 }
-
-
+//////
 void closeFile() {
 	int id = machine->ReadRegister(4); //lay id
 	if (arrayID[id] == NULL) { //neu file da duoc dong hoac chua mo
@@ -257,8 +264,7 @@ void closeFile() {
 		machine->WriteRegister(2, 1);
 	}
 }
-
-
+/////
 void Create()
 {
 	int virtAddr;
@@ -297,4 +303,178 @@ void Create()
 	machine->WriteRegister(2, 0);//tra gia tri thanh cong
 	delete[] fileName;
 
+}
+////
+void readFile()
+{	
+	int virtAddr, numByte, bytesRead;
+	char * buffer;
+	OpenFileId id;
+
+	// lấy địa chỉ data
+	virtAddr = machine->ReadRegister(4);
+	// số byte cần đọc
+	numByte = machine->ReadRegister(5);
+	if (numByte == 0)
+	{
+		// trả về số byte đọc được
+		machine->WriteRegister(2, 0);
+		return;
+	}
+	// id tập tin
+	id = machine->ReadRegister(6);
+	buffer = new char[numByte];
+	if (id == ConsoleOutput || id == ConsoleInput) // xử lý console
+	{
+		if (id == ConsoleInput) // không hợp lệ
+		{
+			// trả về lỗi
+			machine->WriteRegister(2, -1);
+			return;
+		}
+		
+		bytesRead = gSynchConsole->Read(buffer, numByte);
+		if (bytesRead == -1)
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, bytesRead);
+			delete[] buffer;
+			return;
+		}
+		else if (bytesRead == 0) // cuối file
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, -2);
+			delete[] buffer;
+			return;
+		}
+		bytesRead = System2User(virtAddr, bytesRead, buffer);
+		// trả về số byte đọc được
+		machine->WriteRegister(2, bytesRead);
+		delete[] buffer;
+	}
+	else // xử lý file
+	{
+		// file không tồn tại hoặc đã bị đóng
+		if (id >= 10 || arrayID[id] == NULL)
+		{
+			machine->WriteRegister(2, -1);
+			return;
+		}
+
+		bytesRead = arrayID[id]->file->Read(buffer, numByte);
+		if (bytesRead == -1)
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, bytesRead);
+			delete[] buffer;
+			return;
+		}
+		else if (bytesRead == 0) // cuối file
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, -2);
+			delete[] buffer;
+			return;
+		}
+		bytesRead = System2User(virtAddr, bytesRead, buffer);
+		// trả về số byte đọc được
+		machine->WriteRegister(2, bytesRead);
+		delete[] buffer;
+	}
+}
+////
+void writeFile()
+{
+	int virtAddr, numByte, bytesRead;
+	OpenFileId id;
+	char * buffer;
+
+	// lấy địa chỉ chuỗi data
+	virtAddr = machine->ReadRegister(4);
+	// lấy số byte cần ghi
+	numByte = machine->ReadRegister(5);
+
+	if (numByte == 0)
+	{
+		// trả về số byte đọc được
+		machine->WriteRegister(2, 0);
+		return;
+	}
+	// id tập tin
+	id = machine->ReadRegister(6);
+	buffer = User2System(virtAddr, numByte);
+
+	if (buffer == NULL)
+	{
+		machine->WriteRegister(2, -1);
+		return;
+	}
+
+	if (id == ConsoleOutput || id == ConsoleInput) // xử lý console
+	{
+		if (id == ConsoleOutput) // không hợp lệ
+		{
+			// trả về lỗi
+			machine->WriteRegister(2, -1);
+			delete[] buffer;
+			return;
+		}
+		// ghi
+		bytesRead = gSynchConsole->Write(buffer, numByte);
+		if (bytesRead == -1) // ghi lỗi
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, bytesRead);
+			delete[] buffer;
+			return;
+		}
+		else if (bytesRead == 0) // cuối file
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, -2);
+			delete[] buffer;
+			return;
+		}
+		
+		// trả về số byte ghi được
+		machine->WriteRegister(2, bytesRead);
+		delete[] buffer;
+	}
+	else // xử lý file
+	{
+		// file không tồn tại hoặc đã bị đóng
+		if (id >= 10 || arrayID[id] == NULL)
+		{
+			machine->WriteRegister(2, -1);
+			delete[] buffer;
+			return;
+		}
+		else if (arrayID[id]->type == ReadOnly) // tập tin ko cho phép ghi
+		{
+			machine->WriteRegister(2, -1);
+			delete[] buffer;
+			return;
+		}
+		// ghi dữ liệu
+		bytesRead = arrayID[id]->file->WriteAt(buffer, numByte, 0);
+		if (bytesRead == -1)
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, bytesRead);
+			delete[] buffer;
+			return;
+		}
+		else if (bytesRead == 0) // cuối file
+		{
+			// trả về giá trị
+			machine->WriteRegister(2, -2);
+			delete[] buffer;
+			return;
+		}
+		
+		// trả về số byte đọc được
+		machine->WriteRegister(2, bytesRead);
+		delete[] buffer;
+	}
 }

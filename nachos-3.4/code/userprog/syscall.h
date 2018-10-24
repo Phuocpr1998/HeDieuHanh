@@ -88,12 +88,16 @@ typedef int OpenFileId;
 
 #define ConsoleInput	0  
 #define ConsoleOutput	1  
+#define ReadOnly 0
+#define ReadWrite 1
 #define MaxFileLength 32
 
 /* Create a Nachos file, with "name" */
 int createFile(char *name);
 
 // mo file
+// 0 là readonly
+// 1 is read/write
 OpenFileId openFile(char *name, int type);
 
 //dong file

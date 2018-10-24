@@ -50,7 +50,7 @@ Halt:
 	j	$31
 	.end Halt
 
-		.globl printf
+	.globl printf
 	.ent printf
 printf:
 	addiu $2, $0, SC_Printf
@@ -101,6 +101,23 @@ writeFile:
 	syscall
 	j $31
 	.end writeFile
+
+	.globl Read
+	.ent Read
+Read:
+	addiu $2, $0, SC_WriteFile
+	syscall
+	j $31
+	.end Read
+
+	.globl Write
+	.ent Write
+Write:
+	addiu $2, $0, SC_WriteFile
+	syscall
+	j $31
+	.end Write
+
 
 	.globl Exit
 	.ent	Exit

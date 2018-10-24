@@ -103,7 +103,7 @@ writeFile:
 	.end writeFile
 
 	.globl Read
-	.ent writeFile
+	.ent Read
 Read:
 	addiu $2, $0, SC_WriteFile
 	syscall
