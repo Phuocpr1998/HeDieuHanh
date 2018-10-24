@@ -9,7 +9,6 @@
  * All rights reserved.  See copyright.h for copyright notice and limitation 
  * of liability and disclaimer of warranty provisions.
  */
-
 #ifndef SYSCALLS_H
 #define SYSCALLS_H
 
@@ -23,15 +22,16 @@
 #define SC_Exec		2
 #define SC_Join		3
 #define SC_CreateFile	4
-#define SC_Open		5
-#define SC_Read		6
-#define SC_Write	7
-#define SC_Close	8
+#define SC_OpenFile		5
+#define SC_ReadFile		6
+#define SC_WriteFile	7
+#define SC_CloseFile	8
 #define SC_Fork		9
 #define SC_Yield	10
-#define SC_PRINTF       11
-#define SC_OPENFILE		12
-#define SC_CLOSEFILE	13
+#define SC_Read	11
+#define SC_Write	12
+#define SC_Printf      13
+
 
 #ifndef IN_ASM
 
@@ -89,36 +89,25 @@ typedef int OpenFileId;
 #define ConsoleInput	0  
 #define ConsoleOutput	1  
 #define MaxFileLength 32
-/* Create a Nachos file, with "name" */
-int CreateFile(char *name);
 
-// open file
+/* Create a Nachos file, with "name" */
+int createFile(char *name);
+
+// mo file
 OpenFileId openFile(char *name, int type);
 
-//close file
+//dong file
 int closeFile(OpenFileId id);
 
-/* Open the Nachos file "name", and return an "OpenFileId" that can 
- * be used to read and write to the file.
- */
-OpenFileId Open(char *name);
-
-/* Write "size" bytes from "buffer" to the open file. */
-void Write(char *buffer, int size, OpenFileId id);
-
-/* Read "size" bytes from the open file into "buffer".  
- * Return the number of bytes actually read -- if the open file isn't
- * long enough, or if it is an I/O device, and there aren't enough 
- * characters to read, return whatever is available (for I/O devices, 
- * you should always wait until you can return at least one character).
- */
-int Read(char *buffer, int size, OpenFileId id);
-
-/* Close the file, we're done reading and writing to it. */
-void CloseFile(OpenFileId id);
+// ghi file
+int writeFile(char *buffer, int charcount, OpenFileId id);
+// doc file
+int readFile(char *buffer, int charcount, OpenFileId id);
 
 
-
+///////////////////////////////////////////////////////////////////////////
+int Read(char *buffer, int charcount, OpenFileId id);
+void Write(char *buffer, int charcount, OpenFileId id);
 /* User-level thread operations: Fork and Yield.  To allow multiple
  * threads to run within a user program. 
  */

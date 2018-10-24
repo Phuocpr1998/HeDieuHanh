@@ -9,8 +9,8 @@
 #define IN_ASM
 #include "syscall.h"
 
-        .text   
-        .align  2
+		.text   
+		.align  2
 
 /* -------------------------------------------------------------
  * __start
@@ -53,35 +53,70 @@ Halt:
 	.globl printf
 	.ent printf
 printf:
-	addiu $2, $0, SC_PRINTF
+	addiu $2, $0, SC_Printf
 	syscall
 	j $31
 	.end printf
 
+
+	.globl createFile
+	.ent createFile
+createFile:
+	addiu $2, $0, SC_CreateFile
+	syscall
+	j $31
+	.end createFile
+
+
 	.globl openFile
 	.ent openFile
 openFile:
-	addiu $2, $0, SC_OPENFILE
+	addiu $2, $0, SC_OpenFile
 	syscall
 	j $31
 	.end openFile
 
+
 	.globl closeFile
 	.ent closeFile
 closeFile:
-	addiu $2, $0, SC_CLOSEFILE
+	addiu $2, $0, SC_CloseFile
 	syscall
 	j $31
 	.end closeFile
 
-	.globl Close
-	.ent Close
-Close:
-	addiu $2, $0, SC_Close
+	.globl readFile
+	.ent readFile
+readFile:
+	addiu $2, $0, SC_ReadFile
 	syscall
 	j $31
-	.end Close
+	.end readFile
 
+
+	.globl writeFile
+	.ent writeFile
+writeFile:
+	addiu $2, $0, SC_WriteFile
+	syscall
+	j $31
+	.end writeFile
+
+	.globl Read
+	.ent writeFile
+Read:
+	addiu $2, $0, SC_WriteFile
+	syscall
+	j $31
+	.end Read
+
+	.globl Write
+	.ent Write
+Write:
+	addiu $2, $0, SC_WriteFile
+	syscall
+	j $31
+	.end Write
 
 	.globl Join
 	.ent Join
@@ -91,13 +126,7 @@ Join:
 	j $31
 	.end Join
 
-	.globl CreateFile
-	.ent CreateFile
-CreateFile:
-	addiu $2, $0, SC_CreateFile
-	syscall
-	j $31
-	.end CreateFile
+
 
 	.globl Exit
 	.ent	Exit
@@ -115,29 +144,6 @@ Exec:
 	j	$31
 	.end Exec
 
-	.globl Open
-	.ent	Open
-Open:
-	addiu $2,$0,SC_Open
-	syscall
-	j	$31
-	.end Open
-
-	.globl Read
-	.ent	Read
-Read:
-	addiu $2,$0,SC_Read
-	syscall
-	j	$31
-	.end Read
-
-	.globl Write
-	.ent	Write
-Write:
-	addiu $2,$0,SC_Write
-	syscall
-	j	$31
-	.end Write
 
 	.globl Fork
 	.ent	Fork
@@ -156,9 +162,9 @@ Yield:
 	.end Yield
 
 /* dummy function to keep gcc happy */
-        .globl  __main
-        .ent    __main
+		.globl  __main
+		.ent    __main
 __main:
-        j       $31
-        .end    __main
+		j       $31
+		.end    __main
 

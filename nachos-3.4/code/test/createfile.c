@@ -4,7 +4,7 @@
 
 int main()
 {
-	if(CreateFile("text.txt") != -1)
+	if(createFile("text.txt") != -1)
 	{
 		printf("Tao file thanh cong\n");	
 	}

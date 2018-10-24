@@ -50,45 +50,57 @@ Halt:
 	j	$31
 	.end Halt
 
-	.globl printf
+		.globl printf
 	.ent printf
 printf:
-	addiu $2, $0, SC_PRINTF
+	addiu $2, $0, SC_Printf
 	syscall
 	j $31
 	.end printf
 
+
+	.globl createFile
+	.ent createFile
+createFile:
+	addiu $2, $0, SC_CreateFile
+	syscall
+	j $31
+	.end createFile
+
+
 	.globl openFile
 	.ent openFile
 openFile:
-	addiu $2, $0, SC_OPENFILE
+	addiu $2, $0, SC_OpenFile
 	syscall
 	j $31
 	.end openFile
 
+
 	.globl closeFile
 	.ent closeFile
 closeFile:
-	addiu $2, $0, SC_CLOSEFILE
+	addiu $2, $0, SC_CloseFile
 	syscall
 	j $31
 	.end closeFile
 
-	.globl Close
-	.ent Close
-Close:
-	addiu $2, $0, SC_Close
+	.globl readFile
+	.ent readFile
+readFile:
+	addiu $2, $0, SC_ReadFile
 	syscall
 	j $31
-	.end Close
-	
-	.globl CreateFile
-	.ent CreateFile
-CreateFile:
-	addiu $2, $0, SC_CreateFile
+	.end readFile
+
+
+	.globl writeFile
+	.ent writeFile
+writeFile:
+	addiu $2, $0, SC_WriteFile
 	syscall
 	j $31
-	.end CreateFile
+	.end writeFile
 
 	.globl Exit
 	.ent	Exit
@@ -114,31 +126,6 @@ Join:
 	j $31
 	.end Join
 	
-	.globl Open
-	.ent	Open
-Open:
-	addiu $2,$0,SC_Open
-	syscall
-	j	$31
-	.end Open
-
-	.globl Read
-	.ent	Read
-Read:
-	addiu $2,$0,SC_Read
-	syscall
-	j	$31
-	.end Read
-
-	.globl Write
-	.ent	Write
-Write:
-	addiu $2,$0,SC_Write
-	syscall
-	j	$31
-	.end Write
-
-
 	.globl Fork
 	.ent	Fork
 Fork:

@@ -1,4 +1,4 @@
-// exception.cc 
+﻿// exception.cc 
 //	Entry point into the Nachos kernel from user programs.
 //	There are two kinds of things that can cause control to
 //	transfer back to here from user code:
@@ -36,156 +36,15 @@ struct FileCustom {
 FileCustom* arrayID[10];
 
 
+void Create();
+void closeFile();
+void open();
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
-
-char * User2System(int virtAddr, int limit)
-{
-	int oneChar;
-        char * kernelBuf = new char[limit + 1];
-        if (kernelBuf == NULL)
-                return NULL;
-        memset(kernelBuf, 0, limit + 1);
-        //doc vaf copy du lieu tai dia chi virtAddr sang kernelBuff
-        for (int i = 0;i <limit;i++)
-        {
-                machine->ReadMem(virtAddr + i, 1, &oneChar);
-                kernelBuf[i] = (char)oneChar;
-                if (oneChar == 0)
-                        break;
-        }
-        return kernelBuf;
-}
-
+char * User2System(int virtAddr, int limit);
 //Ham copy data o vung kernel sang vung user
 // Tra ve so byte da copy
-int System2User(int virtAddr, int len, char *buffer)
-{
-        if (len < 0)
-                return -1;
-        if (len == 0)
-                return 0;
-
-        int oneChar = 0;
-        int i = 0;
-        do
-        {
-                oneChar = (int)buffer[i];
-                machine->WriteMem(virtAddr + i, 1, oneChar);
-                i++;
-        }
-        while (i <len && oneChar != 0);
-
-        return i;
-}
-
-
-void open() {
-	int virtAddr, type = 0;
-	char *fileName;
-	DEBUG('a', "\nSC_OpenFile...");
-	DEBUG('a', "\nReading virtual address of filename");
-	virtAddr = machine->ReadRegister(4);
-	DEBUG('a', "\nReading filename.");
-	fileName = User2System(virtAddr, MaxFileLength + 1);
-	if (fileName == NULL) {
-		printf("\nNot enough memory in system");
-		DEBUG('a', "\nNot enough memory in system");
-		//tra ve gia tri loi -1
-		machine->WriteRegister(2, -1);
-		delete[] fileName; // xoa vung nho da cap phat trong ham User2System
-		return; // ket thuc ham
-	}
-	type = machine->ReadRegister(5);
-	DEBUG('a', "\nReading type.");
-
-	if (strcmp(fileName, "console") == 0) { //neu la console
-		FileCustom* fileCustom = new FileCustom;
-		arrayID[type] = fileCustom;
-		machine->WriteRegister(2, type);
-		return;
-	}
-	//neu la file
-	OpenFile* file = fileSystem->Open(fileName);
-
-	if (file != NULL) { //file != null
-		int index = -1;
-		for (int i = 2; i < MAXLENGHT; i++) { //tim vi tri rong trong mang neu het vi tri tra ve loi
-			if (arrayID[i] == NULL) {
-				index = i;
-				break;
-			}
-		}
-		if (index != -1) { //neu co vi tri tra ve fileid = index
-			FileCustom* fileCustom = new FileCustom;
-			fileCustom->file = file;
-			fileCustom->type = type;
-			arrayID[index] = fileCustom;
-		}
-		machine->WriteRegister(2, index);
-	}
-	else {
-		machine->WriteRegister(2, -1);
-	}
-	delete[] fileName;
-}
-
-
-void closeFile() {
-	int id = machine->ReadRegister(4); //lay id
-	if (arrayID[id] == NULL) { //neu file da duoc dong hoac chua mo
-		machine->WriteRegister(2, -1);
-	}
-	else {
-		FileCustom* temp = arrayID[id];
-		if (id > 2) {
-			delete temp->file;
-		}
-		delete temp;
-		machine->WriteRegister(2, 1);
-	}
-}
-
-
-void Create()
-{
-	int virtAddr;
-        char *fileName;
-
-        DEBUG('a',"\nSC_CreateFile all...");
-        DEBUG('a',"\nReading virtual address of filename");
-
-        // lay dia chi cua filename trong thanh ghi 4
-        virtAddr = machine->ReadRegister(4);
-
-        DEBUG('a',"\nReading filename.");
-        // copy vung du lieu cua file name ngoai user space vao vung kernel space
-        // gia tri tra ve la dia chi cua filename trong vung kenel space
-        fileName = User2System(virtAddr, MaxFileLength + 1);
-        if (fileName == NULL)
-        {
-                printf("\nNot enough memory in system");
-                DEBUG('a',"\nNot enough memory in system");
-                //tra ve gia tri loi -1
-                machine->WriteRegister(2,-1);
-                delete[] fileName; // xoa vung nho da cap phat trong ham User2System
-                return; // ket thuc ham
-        }
-
-        DEBUG('a',"\nFinish reading filename.");
-        if (!fileSystem->Create(fileName,0))
-        {
-                printf("\nError create file '%s'", fileName);
-                machine->WriteRegister(2,-1);
-                delete[] fileName;
-                return; //ket thuc ham
-        }
-
-        DEBUG('a',"\nFinish create file");
-        machine->WriteRegister(2,0);//tra gia tri thanh cong
-        delete[] fileName;
-
-}
+int System2User(int virtAddr, int len, char *buffer);
 
 
 //----------------------------------------------------------------------
@@ -230,13 +89,13 @@ ExceptionHandler(ExceptionType which)
 		case SC_CreateFile:
 			Create();
 			break;
-		case SC_OPENFILE:
+		case SC_OpenFile:
 			open();
 			break;
-		case SC_CLOSEFILE:
+		case SC_CloseFile:
 			closeFile();
 			break;
-		case SC_PRINTF:
+		case SC_Printf:
 		{
 			int virtAddr = machine->ReadRegister(4);
 			printf("%d",virtAddr);
@@ -293,3 +152,149 @@ ExceptionHandler(ExceptionType which)
 	}
 
 }  
+
+//Ham copy vung data tu user space sang kernel space
+//Tra ve con tro tro den vung data da dc chuyen sang kernel space
+
+char * User2System(int virtAddr, int limit)
+{
+	int oneChar;
+	char * kernelBuf = new char[limit + 1];
+	if (kernelBuf == NULL)
+		return NULL;
+	memset(kernelBuf, 0, limit + 1);
+	//doc vaf copy du lieu tai dia chi virtAddr sang kernelBuff
+	for (int i = 0; i < limit; i++)
+	{
+		machine->ReadMem(virtAddr + i, 1, &oneChar);
+		kernelBuf[i] = (char)oneChar;
+		if (oneChar == 0)
+			break;
+	}
+	return kernelBuf;
+}
+
+//Ham copy data o vung kernel sang vung user
+// Tra ve so byte da copy
+int System2User(int virtAddr, int len, char *buffer)
+{
+	if (len < 0)
+		return -1;
+	if (len == 0)
+		return 0;
+
+	int oneChar = 0;
+	int i = 0;
+	do
+	{
+		oneChar = (int)buffer[i];
+		machine->WriteMem(virtAddr + i, 1, oneChar);
+		i++;
+	} while (i < len && oneChar != 0);
+
+	return i;
+}
+
+
+void open() {
+	int virtAddr, type = 0;
+	char *fileName;
+	DEBUG('a', "\nSC_OpenFile...");
+	DEBUG('a', "\nReading virtual address of filename");
+	virtAddr = machine->ReadRegister(4);
+	DEBUG('a', "\nReading filename.");
+	fileName = User2System(virtAddr, MaxFileLength + 1);
+	if (fileName == NULL) {
+		printf("\nNot enough memory in system");
+		DEBUG('a', "\nNot enough memory in system");
+		//tra ve gia tri loi -1
+		machine->WriteRegister(2, -1);
+		delete[] fileName; // xoa vung nho da cap phat trong ham User2System
+		return; // ket thuc ham
+	}
+	type = machine->ReadRegister(5);
+	DEBUG('a', "\nReading type.");
+	
+	//
+	OpenFile* file = fileSystem->Open(fileName);
+
+	if (file != NULL) { //file != null
+		int index = -1;
+		// vị trí 0 và 1 là vị trí cho console input và console out
+		for (int i = 2; i < MAXLENGHT; i++) { //tim vi tri rong trong mang neu het vi tri tra ve loi
+			if (arrayID[i] == NULL) {
+				index = i;
+				break;
+			}
+		}
+		if (index != -1) { //neu co vi tri tra ve fileid = index
+			FileCustom* fileCustom = new FileCustom;
+			fileCustom->file = file;
+			fileCustom->type = type;
+			arrayID[index] = fileCustom;
+		}
+		machine->WriteRegister(2, index);
+	}
+	else {
+		machine->WriteRegister(2, -1);
+	}
+	delete[] fileName;
+}
+
+
+void closeFile() {
+	int id = machine->ReadRegister(4); //lay id
+	if (arrayID[id] == NULL) { //neu file da duoc dong hoac chua mo
+		machine->WriteRegister(2, -1);
+	}
+	else {
+		FileCustom* temp = arrayID[id];
+		if (id > 2) {
+			delete temp->file;
+		}
+		delete temp;
+		arrayID[id] = NULL;
+		machine->WriteRegister(2, 1);
+	}
+}
+
+
+void Create()
+{
+	int virtAddr;
+	char *fileName;
+
+	DEBUG('a', "\nSC_CreateFile all...");
+	DEBUG('a', "\nReading virtual address of filename");
+
+	// lay dia chi cua filename trong thanh ghi 4
+	virtAddr = machine->ReadRegister(4);
+
+	DEBUG('a', "\nReading filename.");
+	// copy vung du lieu cua file name ngoai user space vao vung kernel space
+	// gia tri tra ve la dia chi cua filename trong vung kenel space
+	fileName = User2System(virtAddr, MaxFileLength + 1);
+	if (fileName == NULL)
+	{
+		printf("\nNot enough memory in system");
+		DEBUG('a', "\nNot enough memory in system");
+		//tra ve gia tri loi -1
+		machine->WriteRegister(2, -1);
+		delete[] fileName; // xoa vung nho da cap phat trong ham User2System
+		return; // ket thuc ham
+	}
+
+	DEBUG('a', "\nFinish reading filename.");
+	if (!fileSystem->Create(fileName, 0))
+	{
+		printf("\nError create file '%s'", fileName);
+		machine->WriteRegister(2, -1);
+		delete[] fileName;
+		return; //ket thuc ham
+	}
+
+	DEBUG('a', "\nFinish create file");
+	machine->WriteRegister(2, 0);//tra gia tri thanh cong
+	delete[] fileName;
+
+}
