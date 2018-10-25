@@ -97,10 +97,10 @@ ExceptionHandler(ExceptionType which)
 			closeFile();
 			break;
 		case SC_WriteFile:
-			readFile();
+			writeFile();
 			break;
 		case SC_ReadFile:
-			writeFile();
+			readFile();
 			break;
 		case SC_Printf:
 		{
@@ -457,7 +457,7 @@ void writeFile()
 			return;
 		}
 		// ghi dữ liệu
-		bytesRead = arrayID[id]->file->WriteAt(buffer, numByte, 0);
+		bytesRead = arrayID[id]->file->Write(buffer, numByte);
 		if (bytesRead == -1)
 		{
 			// trả về giá trị
