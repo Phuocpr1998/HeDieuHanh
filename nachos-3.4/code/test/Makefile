@@ -35,7 +35,7 @@ CPP = gcc -E
 INCDIR =-I../userprog -I../threads
 CFLAGS = -G 0 -c $(INCDIR)
 
-all: halt shell matmult sort createfile openfile readWrite
+all: halt shell matmult sort createfile openfile readWrite readWriteConsole
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.c > strt.s
@@ -83,3 +83,9 @@ readWrite.o: readWrite.c
 readWrite: readWrite.o start.o
 	$(LD) $(LDFLAGS) start.o readWrite.o -o readWrite.coff
 	../bin/coff2noff readWrite.coff readWrite
+
+readWriteConsole.o: readWriteConsole.c
+	$(CC) $(CFLAGS) -c readWriteConsole.c
+readWriteConsole: readWriteConsole.o start.o
+	$(LD) $(LDFLAGS) start.o readWriteConsole.o -o readWriteConsole.coff
+	../bin/coff2noff readWriteConsole.coff readWriteConsole
