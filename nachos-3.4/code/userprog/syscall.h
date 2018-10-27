@@ -108,8 +108,8 @@ int closeFile(OpenFileId id);
 int writeFile(char *buffer, int charcount, OpenFileId id);
 // doc file
 int readFile(char *buffer, int charcount, OpenFileId id);
-//copy file
-int copyFile(char *fileNameDes, char *fileNameSrc);
+////copy file
+//int copyFile(char *fileNameDes, char *fileNameSrc);
 
 
 ///////////////////////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@ int main()
 	char data[18];
 
 	index = openFile("text.txt", ReadWrite);
-	if (readFile(data, 7, index) == -1)
+	if (readFile(data, 7, index) == -1 && readFile(data, 7, index) == -2)
 	{
 		printf("Doc file loi\n");
 	}
