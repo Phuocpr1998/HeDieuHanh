@@ -26,6 +26,7 @@
 #include "syscall.h"
 #include "openfile.h"
 #define MAXLENGHT 10
+#define MAXBUFFER 1024
 
 
 struct FileCustom {
@@ -41,6 +42,7 @@ void closeFile();
 void open();
 void readFile();
 void writeFile();
+void copy();
 
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
@@ -101,6 +103,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_ReadFile:
 			readFile();
+			break;
+		case SC_COPYFILE:
+			copy();
 			break;
 		case SC_Printf:
 		{
@@ -477,4 +482,50 @@ void writeFile()
 		machine->WriteRegister(2, bytesRead);
 		delete[] buffer;
 	}
+}
+
+void copy() {
+	int numByteSrc, bytesReadSrc, bytesWriteDes, virtAddr;
+	char *fileNameSrc, *fileNameDes;
+
+	//ten file co nhap qua console hay khong
+	virtAddr = machine->ReadRegister(4);
+	fileNameDes = User2System(virtAddr, MaxFileLength + 1);
+	virtAddr = machine->ReadRegister(5);
+	fileNameSrc = User2System(virtAddr, MaxFileLength + 1);
+	if (fileNameDes != NULL && fileNameSrc != NULL) {
+		OpenFile* fileDes = fileSystem->Open(fileNameDes); // mo file dich
+		OpenFile* fileSrc = fileSystem->Open(fileNameSrc); // mo file nguon
+		if (fileDes != NULL && fileSrc != NULL) {
+			char* temp = new char[MAXBUFFER + 1];
+			numByteSrc = fileSrc->Length();
+			while (numByteSrc > 0) {
+				bytesReadSrc = fileSrc->Read(temp, MAXBUFFER);
+				bytesWriteDes = fileDes->Write(temp, bytesReadSrc);
+				numByteSrc -= bytesWriteDes;
+			}
+			machine->WriteRegister(2, 1); //copy thanh cong
+			delete[] temp;
+		}
+		else {
+			machine->WriteRegister(2, -1); //mo file that bai
+		}
+		delete[] fileNameDes;
+		delete[] fileNameSrc;
+		if (fileDes != NULL) {
+			delete fileDes;
+		}
+		if (fileSrc != NULL) {
+			delete fileSrc;
+		}
+		return;
+	}
+
+	if (fileNameDes != NULL) {
+		delete[] fileNameDes;
+	}
+	if (fileNameSrc != NULL) {
+		delete[] fileNameSrc;
+	}
+	machine->WriteRegister(2, 0); // loi khong nhan ten file
 }

@@ -31,6 +31,7 @@
 #define SC_Read	11
 #define SC_Write	12
 #define SC_Printf      13
+#define SC_COPYFILE		14
 
 
 #ifndef IN_ASM
@@ -107,6 +108,8 @@ int closeFile(OpenFileId id);
 int writeFile(char *buffer, int charcount, OpenFileId id);
 // doc file
 int readFile(char *buffer, int charcount, OpenFileId id);
+//copy file
+int copyFile(char *fileNameDes, char *fileNameSrc);
 
 
 ///////////////////////////////////////////////////////////////////////////

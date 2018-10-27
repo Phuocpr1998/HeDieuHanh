@@ -102,6 +102,14 @@ writeFile:
 	j $31
 	.end writeFile
 
+	.globl copyFile
+	.ent copyFile
+copyFile:
+	addiu $2, $0, SC_COPYFILE
+	syscall
+	j $31
+	.end copyFile
+
 	.globl Read
 	.ent Read
 Read:
