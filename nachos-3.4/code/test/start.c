@@ -102,6 +102,14 @@ writeFile:
 	j $31
 	.end writeFile
 
+	.globl echo
+	.ent echo
+echo:
+	addiu $2, $0, SC_Echo
+	syscall
+	j $31
+	.end echo
+
 	.globl Read
 	.ent Read
 Read:

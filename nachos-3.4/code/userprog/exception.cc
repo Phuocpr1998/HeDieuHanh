@@ -42,6 +42,7 @@ void closeFile();
 void open();
 void readFile();
 void writeFile();
+void echo();
 //void copy();
 
 //Ham copy vung data tu user space sang kernel space
@@ -107,6 +108,9 @@ ExceptionHandler(ExceptionType which)
 		/*case SC_COPYFILE:
 			copy();
 			break;*/
+		case SC_Echo:
+			echo();
+			break;
 		case SC_Printf:
 		{
 			int virtAddr = machine->ReadRegister(4);
@@ -482,6 +486,25 @@ void writeFile()
 		machine->WriteRegister(2, bytesRead);
 		delete[] buffer;
 	}
+}
+
+void echo(){
+	int virtAddr, bytesRead;
+	char * input;
+	input = new char[MAXLENGHT];
+
+	printf("Nhap noi dung:\n");
+	// doc
+	bytesRead = gSynchConsole->Read(input, MAXLENGHT);
+	if (bytesRead <= 0)
+	{
+		printf("ECHO is on\n");
+		return;
+	}
+
+	DEBUG('a', "\nFinish echo input");
+	printf("%s\n", input);
+	delete[] input;
 }
 
 //void copy() {
