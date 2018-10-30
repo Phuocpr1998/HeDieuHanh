@@ -33,6 +33,7 @@
 #define SC_Printf      13
 #define SC_COPYFILE		14
 #define SC_Echo 15
+#define SC_SEEK 16
 
 #ifndef IN_ASM
 
@@ -112,7 +113,9 @@ int readFile(char *buffer, int charcount, OpenFileId id);
 //int copyFile(char *fileNameDes, char *fileNameSrc);
 
 // echo
-void echo();
+//void echo();
+
+int Seek(int pos, OpenFileId id);
 
 ///////////////////////////////////////////////////////////////////////////
 int Read(char *buffer, int charcount, OpenFileId id);

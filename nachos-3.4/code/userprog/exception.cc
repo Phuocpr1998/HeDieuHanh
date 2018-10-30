@@ -32,6 +32,7 @@
 struct FileCustom {
 	OpenFile* file;
 	int type;
+	int pos;
 };
 
 FileCustom* arrayID[10];
@@ -44,6 +45,7 @@ void readFile();
 void writeFile();
 void echo();
 //void copy();
+void seek();
 
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
@@ -110,6 +112,9 @@ ExceptionHandler(ExceptionType which)
 			break;*/
 		case SC_Echo:
 			echo();
+			break;
+		case SC_SEEK:
+			seek();
 			break;
 		case SC_Printf:
 		{
@@ -248,6 +253,7 @@ void open() {
 			FileCustom* fileCustom = new FileCustom;
 			fileCustom->file = file;
 			fileCustom->type = type;
+			fileCustom->pos = 0;
 			arrayID[index] = fileCustom;
 		}
 		machine->WriteRegister(2, index);
@@ -316,7 +322,7 @@ void Create()
 ////
 void readFile()
 {	
-	int virtAddr, numByte, bytesRead;
+	int virtAddr, numByte, bytesRead, pos;
 	char * buffer;
 	OpenFileId id;
 
@@ -371,7 +377,9 @@ void readFile()
 			return;
 		}
 
-		bytesRead = arrayID[id]->file->Read(buffer, numByte);
+		//bytesRead = arrayID[id]->file->Read(buffer, numByte);
+		pos = arrayID[id]->pos;
+		bytesRead = arrayID[id]->file->ReadAt(buffer, numByte, pos);
 		if (bytesRead == -1)
 		{
 			// trả về giá trị
@@ -388,6 +396,11 @@ void readFile()
 		}
 		bytesRead = System2User(virtAddr, bytesRead, buffer);
 		// trả về số byte đọc được
+
+		// cap nhat lai pos
+		pos = pos + bytesRead;
+		arrayID[id]->pos = pos;
+
 		machine->WriteRegister(2, bytesRead);
 		delete[] buffer;
 	}
@@ -395,7 +408,7 @@ void readFile()
 ////
 void writeFile()
 {
-	int virtAddr, numByte, bytesRead;
+	int virtAddr, numByte, bytesRead,pos;
 	OpenFileId id;
 	char * buffer;
 
@@ -466,7 +479,9 @@ void writeFile()
 			return;
 		}
 		// ghi dữ liệu
-		bytesRead = arrayID[id]->file->Write(buffer, numByte);
+		//bytesRead = arrayID[id]->file->Write(buffer, numByte);
+		pos = arrayID[id]->pos;
+		bytesRead = arrayID[id]->file->WriteAt(buffer, numByte, pos);
 		if (bytesRead == -1)
 		{
 			// trả về giá trị
@@ -481,7 +496,8 @@ void writeFile()
 			delete[] buffer;
 			return;
 		}
-		
+		pos = pos + bytesRead;
+		arrayID[id]->pos = pos;
 		// trả về số byte đọc được
 		machine->WriteRegister(2, bytesRead);
 		delete[] buffer;
@@ -552,3 +568,20 @@ void echo(){
 //	}
 //	machine->WriteRegister(2, 0); // loi khong nhan ten file
 //}
+
+void seek(){
+	int pos = machine->ReadRegister(4);
+	int id = machine->ReadRegister(5);
+	//FileCustom* temp = arrayID[id];
+	if(arrayID[id] == NULL){
+		machine->WriteRegister(2, -1);
+		return;
+	}
+	int len = arrayID[id]->file->Length();
+	if(pos == -1 || pos >= len){
+		pos == len - 1;// - 1;
+	}
+	arrayID[id]->pos = pos;
+	machine->WriteRegister(2, pos);
+	return;
+}

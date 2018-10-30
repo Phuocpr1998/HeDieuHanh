@@ -110,6 +110,14 @@ echo:
 	j $31
 	.end echo
 
+	.globl Seek
+	.ent Seek
+Seek:
+	addiu $2, $0, SC_SEEK
+	syscall
+	j $31
+	.end Seek
+
 	.globl Read
 	.ent Read
 Read:
