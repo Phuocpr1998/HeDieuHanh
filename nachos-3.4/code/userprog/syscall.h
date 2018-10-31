@@ -31,9 +31,7 @@
 #define SC_Read	11
 #define SC_Write	12
 #define SC_Printf      13
-#define SC_COPYFILE		14
-#define SC_Echo 15
-#define SC_SEEK 16
+#define SC_SEEK 14
 
 #ifndef IN_ASM
 
@@ -109,11 +107,6 @@ int closeFile(OpenFileId id);
 int writeFile(char *buffer, int charcount, OpenFileId id);
 // doc file
 int readFile(char *buffer, int charcount, OpenFileId id);
-////copy file
-//int copyFile(char *fileNameDes, char *fileNameSrc);
-
-// echo
-//void echo();
 
 int Seek(int pos, OpenFileId id);
 
