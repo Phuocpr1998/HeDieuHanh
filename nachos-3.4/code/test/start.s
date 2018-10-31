@@ -102,7 +102,7 @@ writeFile:
 	j $31
 	.end writeFile
 
-		.globl echo
+	.globl echo
 	.ent echo
 echo:
 	addiu $2, $0, SC_Echo
