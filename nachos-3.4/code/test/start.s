@@ -102,13 +102,20 @@ writeFile:
 	j $31
 	.end writeFile
 
+<<<<<<< HEAD
 	.globl echo
 	.ent echo
 echo:
 	addiu $2, $0, SC_Echo
+=======
+	.globl Seek
+	.ent Seek
+Seek:
+	addiu $2, $0, SC_SEEK
+>>>>>>> 85586dd39a9f5e601b3c4c304d970abcc8ef7c64
 	syscall
 	j $31
-	.end echo
+	.end Seek
 
 	.globl Read
 	.ent Read

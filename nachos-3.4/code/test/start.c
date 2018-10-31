@@ -102,13 +102,14 @@ writeFile:
 	j $31
 	.end writeFile
 
-	.globl echo
-	.ent echo
-echo:
-	addiu $2, $0, SC_Echo
+
+	.globl Seek
+	.ent Seek
+Seek:
+	addiu $2, $0, SC_SEEK
 	syscall
 	j $31
-	.end echo
+	.end Seek
 
 	.globl Read
 	.ent Read
