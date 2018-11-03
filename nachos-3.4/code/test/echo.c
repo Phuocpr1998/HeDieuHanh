@@ -4,15 +4,17 @@
 
 int main()
 {	
-	char * data;
-	writeFile("Echo is on.\n", 13, ConsoleInput);
-	if (readFile(data, MAXLEN, ConsoleOutput) == -1)
+	char data[MAXLEN];
+	Write("Echo is on.\n", 13, ConsoleInput);
+	if (Read(data, MAXLEN, ConsoleOutput) == -1)
 	{
-		writeFile("Error!\n", 8, ConsoleInput);
+		Write("Error!\n", 8, ConsoleInput);
 	}
 	else
 	{
-		writeFile(data, MAXLEN, ConsoleInput);
+		Write("Dong vua nhap:\n", 15, ConsoleInput);
+		Write(data, MAXLEN, ConsoleInput);
+		Write("\n\n", 2, ConsoleInput);
 	}
 	return 0;
 }

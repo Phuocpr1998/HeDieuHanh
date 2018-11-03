@@ -5,22 +5,28 @@
 int main(){
 	int index, fnl, read_len;
 	char data[MAXLEN + 1];
-	writeFile("Nhap ten file:",15,ConsoleInput);
-	fnl = readFile(data, MAXLEN,ConsoleOutput );	
+	
+	Write("Nhap ten file:", 15, ConsoleInput);
+	fnl = Read(data, MAXLEN, ConsoleOutput );
+
 	if(fnl == -1)
 	{
-		printf("Loi\n");
+		Write("Loi\n", 5, ConsoleInput);
 	}
 	else{
-		index = openFile(data, ReadOnly);
-		printf("Noi dung file:\n");
+		index = Open(data, ReadOnly);
+		Write("Noi dung file:\n",16, ConsoleInput);
+
 		do{
-			read_len = readFile(data, MAXLEN, index);
+			read_len = Read(data, MAXLEN, index);
 			if(read_len != -1 && read_len != -2){
-				writeFile(data, read_len, ConsoleInput);
+				Write(data, read_len, ConsoleInput);
 			}
 		}while(read_len != -2);
-		printf("\n");
+		
+		Write("\n", 1, ConsoleInput);
 	}
+	Write("\n", 1, ConsoleInput);
+
 	return 0;
 }

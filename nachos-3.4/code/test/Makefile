@@ -35,7 +35,7 @@ CPP = gcc -E
 INCDIR =-I../userprog -I../threads
 CFLAGS = -G 0 -c $(INCDIR)
 
-all: halt shell matmult sort createfile openfile readWrite readWriteConsole copyfile echo seek cat
+all: halt shell matmult sort createfile copy echo cat
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.c > strt.s
@@ -72,41 +72,17 @@ createfile: createfile.o start.o
 	$(LD) $(LDFLAGS) start.o createfile.o -o createfile.coff
 	../bin/coff2noff createfile.coff createfile
 	
-openfile.o: openfile.c
-	$(CC) $(CFLAGS) -c openfile.c
-openfile: openfile.o start.o
-	$(LD) $(LDFLAGS) start.o openfile.o -o openfile.coff
-	../bin/coff2noff openfile.coff openfile
-
-readWrite.o: readWrite.c
-	$(CC) $(CFLAGS) -c readWrite.c
-readWrite: readWrite.o start.o
-	$(LD) $(LDFLAGS) start.o readWrite.o -o readWrite.coff
-	../bin/coff2noff readWrite.coff readWrite
-
-readWriteConsole.o: readWriteConsole.c
-	$(CC) $(CFLAGS) -c readWriteConsole.c
-readWriteConsole: readWriteConsole.o start.o
-	$(LD) $(LDFLAGS) start.o readWriteConsole.o -o readWriteConsole.coff
-	../bin/coff2noff readWriteConsole.coff readWriteConsole
-	
-copyfile.o: copyfile.c
-	$(CC) $(CFLAGS) -c copyfile.c
-copyfile: copyfile.o start.o
-	$(LD) $(LDFLAGS) start.o copyfile.o -o copyfile.coff
-	../bin/coff2noff copyfile.coff copyfile
+copy.o: copy.c
+	$(CC) $(CFLAGS) -c copy.c
+copy: copy.o start.o
+	$(LD) $(LDFLAGS) start.o copy.o -o copy.coff
+	../bin/coff2noff copy.coff copy
 
 echo.o: echo.c
 	$(CC) $(CFLAGS) -c echo.c
 echo: echo.o start.o
 	$(LD) $(LDFLAGS) start.o echo.o -o echo.coff
 	../bin/coff2noff echo.coff echo	
-
-seek.o: seek.c
-	$(CC) $(CFLAGS) -c seek.c
-seek: seek.o start.o
-	$(LD) $(LDFLAGS) start.o seek.o -o seek.coff
-	../bin/coff2noff seek.coff seek
 
 cat.o: cat.c
 	$(CC) $(CFLAGS) -c cat.c

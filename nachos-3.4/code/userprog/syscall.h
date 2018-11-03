@@ -21,17 +21,14 @@
 #define SC_Exit		1
 #define SC_Exec		2
 #define SC_Join		3
-#define SC_CreateFile	4
-#define SC_OpenFile		5
-#define SC_ReadFile		6
-#define SC_WriteFile	7
-#define SC_CloseFile	8
+#define SC_Create	4
+#define SC_Open		5
+#define SC_Read		6
+#define SC_Write	7
+#define SC_Close	8
 #define SC_Fork		9
 #define SC_Yield	10
-#define SC_Read	11
-#define SC_Write	12
-#define SC_Printf      13
-#define SC_SEEK 14
+#define SC_Seek		11
 
 #ifndef IN_ASM
 
@@ -93,26 +90,24 @@ typedef int OpenFileId;
 #define MaxFileLength 32
 
 /* Create a Nachos file, with "name" */
-int createFile(char *name);
+int CreateFile(char *name);
 
 // mo file
 // 0 là readonly
 // 1 is read/write
-OpenFileId openFile(char *name, int type);
+OpenFileId Open(char *name, int type);
 
 //dong file
-int closeFile(OpenFileId id);
+int CloseFile(OpenFileId id);
 
 // ghi file
-int writeFile(char *buffer, int charcount, OpenFileId id);
+int Write(char *buffer, int charcount, OpenFileId id);
 // doc file
-int readFile(char *buffer, int charcount, OpenFileId id);
+int Read(char *buffer, int charcount, OpenFileId id);
 
 int Seek(int pos, OpenFileId id);
 
 ///////////////////////////////////////////////////////////////////////////
-int Read(char *buffer, int charcount, OpenFileId id);
-void Write(char *buffer, int charcount, OpenFileId id);
 /* User-level thread operations: Fork and Yield.  To allow multiple
  * threads to run within a user program. 
  */
@@ -127,8 +122,6 @@ void Fork(void (*func)());
  */
 void Yield();		
 
-//Ham hien thi chuoi ra man hinh
-void printf(char *str);
 
 
 #endif /* IN_ASM */

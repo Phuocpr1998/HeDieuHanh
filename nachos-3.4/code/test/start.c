@@ -50,82 +50,58 @@ Halt:
 	j	$31
 	.end Halt
 
-	.globl printf
-	.ent printf
-printf:
-	addiu $2, $0, SC_Printf
+
+	.globl CreateFile
+	.ent CreateFile
+CreateFile:
+	addiu $2, $0, SC_Create
 	syscall
 	j $31
-	.end printf
+	.end CreateFile
 
 
-	.globl createFile
-	.ent createFile
-createFile:
-	addiu $2, $0, SC_CreateFile
+	.globl Open
+	.ent Open
+Open:
+	addiu $2, $0, SC_Open
 	syscall
 	j $31
-	.end createFile
+	.end Open
 
 
-	.globl openFile
-	.ent openFile
-openFile:
-	addiu $2, $0, SC_OpenFile
+	.globl CloseFile
+	.ent CloseFile
+CloseFile:
+	addiu $2, $0, SC_Close
 	syscall
 	j $31
-	.end openFile
-
-
-	.globl closeFile
-	.ent closeFile
-closeFile:
-	addiu $2, $0, SC_CloseFile
-	syscall
-	j $31
-	.end closeFile
-
-	.globl readFile
-	.ent readFile
-readFile:
-	addiu $2, $0, SC_ReadFile
-	syscall
-	j $31
-	.end readFile
-
-
-	.globl writeFile
-	.ent writeFile
-writeFile:
-	addiu $2, $0, SC_WriteFile
-	syscall
-	j $31
-	.end writeFile
-
-
-	.globl Seek
-	.ent Seek
-Seek:
-	addiu $2, $0, SC_SEEK
-	syscall
-	j $31
-	.end Seek
+	.end CloseFile
 
 	.globl Read
 	.ent Read
 Read:
-	addiu $2, $0, SC_WriteFile
+	addiu $2, $0, SC_Read
 	syscall
 	j $31
 	.end Read
 
+
 	.globl Write
 	.ent Write
 Write:
-	addiu $2, $0, SC_WriteFile
+	addiu $2, $0, SC_Write
 	syscall
 	j $31
 	.end Write
+
+	.globl Seek
+	.ent Seek
+Seek:
+	addiu $2, $0, SC_Seek
+	syscall
+	j $31
+	.end Seek
+
 
 	.globl Join
 	.ent Join

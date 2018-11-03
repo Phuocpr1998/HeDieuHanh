@@ -4,13 +4,24 @@
 
 int main()
 {
-	if(createFile("text.txt") != -1)
+	char name[MAXLEN];
+
+	Write("Nhap vao ten file: ",20, ConsoleInput);
+	if (Read(name, MAXLEN, ConsoleOutput) == -1)
 	{
-		printf("Tao file thanh cong\n");	
+		Write("Khong lay duoc ten file\n", 25, ConsoleInput);
 	}
 	else
 	{
-		printf("Tao file that bai\n");
+		if (CreateFile(name) != -1)
+		{
+			Write("Tao file thanh cong\n", 21, ConsoleInput);
+		}
+		else
+		{
+			Write("Tao file that bai\n", 19, ConsoleInput);
+		}
 	}
+	Write("\n", 1, ConsoleInput);
 	return 0;
 }
