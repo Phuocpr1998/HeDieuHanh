@@ -27,16 +27,6 @@
 #include "openfile.h"
 
 #define MAXBUFFER 1024
-#define MAXFILE 10
-
-
-struct FileCustom {
-	OpenFile* file;
-	int type;
-	int pos;
-};
-
-FileCustom* arrayID[MAXFILE];
 
 
 void createFile();
@@ -218,61 +208,44 @@ void openFile() {
 	}
 	type = machine->ReadRegister(5);
 	DEBUG('a', "\nReading type.");
-
-	if (type != ReadOnly && type != ReadWrite)
-	{
-		// lỗi kiểu mở file
-		machine->WriteRegister(2, -1);
-		delete[] fileName; // xoa vung nho da cap phat trong ham User2System
-		return; // ket thuc ham
-	}
 	
-	//
+	// khởi tạo con trỏ open file
 	OpenFile* file = fileSystem->Open(fileName);
 
-	if (file != NULL) { //file != null
-		int index = -1;
-		// vị trí 0 và 1 là vị trí cho console input và console out
-		for (int i = 2; i < MAXFILE; i++) { //tim vi tri rong trong mang neu het vi tri tra ve loi
-			if (arrayID[i] == NULL) {
-				index = i;
-				break;
-			}
+	// tìm vị trí trống
+	int id = currentThread->fileManage->FindFreeSlot();
+
+	if (id != -1) // còn vị trí trông
+	{
+		bool isOpen = currentThread->fileManage->Add(id, file, type);
+		
+		if (isOpen) // mở file thành công
+		{
+			machine->WriteRegister(2, id);
 		}
-		if (index != -1) { //neu co vi tri tra ve fileid = index
-			FileCustom* fileCustom = new FileCustom;
-			fileCustom->file = file;
-			fileCustom->type = type;
-			fileCustom->pos = 0;
-			arrayID[index] = fileCustom;
+		else
+		{
+			machine->WriteRegister(2, -1);
 		}
-		machine->WriteRegister(2, index);
 	}
-	else {
+	else  // hết vị trí trống
+	{
 		machine->WriteRegister(2, -1);
 	}
 	delete[] fileName;
 }
-//////
+/////
 void closeFile() {
 	int id = machine->ReadRegister(4); //lay id
-	if (id >= MAXFILE || id <= 1) // kiểm tra id hợp lệ, không thể đóng được ConsoleOutput và ConsoleInput
+	bool isClose = currentThread->fileManage->CloseFile(id);
+
+	if (isClose) 
+	{
+		machine->WriteRegister(2, 0);
+	}
+	else 
 	{
 		machine->WriteRegister(2, -1);
-		return;
-	}
-
-	if (arrayID[id] == NULL) { //neu file da duoc dong hoac chua mo
-		machine->WriteRegister(2, -1);
-	}
-	else {
-		FileCustom* temp = arrayID[id];
-		if (id > 2) {
-			delete temp->file;
-		}
-		delete temp;
-		arrayID[id] = NULL;
-		machine->WriteRegister(2, 0);
 	}
 }
 /////
@@ -315,7 +288,7 @@ void createFile()
 	delete[] fileName;
 
 }
-////
+/////
 void readFile()
 {	
 	int virtAddr, numByte, bytesRead, pos;
@@ -340,12 +313,6 @@ void readFile()
 	}
 	// id tập tin
 	id = machine->ReadRegister(6);
-
-	if (id >= MAXFILE || id < 0) // kiểm tra id hợp lệ
-	{
-		machine->WriteRegister(2, -1);
-		return;
-	}
 
 	buffer = new char[numByte];
 	if (id == ConsoleOutput || id == ConsoleInput) // xử lý console
@@ -379,14 +346,15 @@ void readFile()
 	}
 	else // xử lý file
 	{
+		FileCustom *file = currentThread->fileManage->GetFile(id);
 		// file không tồn tại hoặc đã bị đóng
-		if (arrayID[id] == NULL)
+		if (file == NULL)
 		{
 			machine->WriteRegister(2, -1);
 			return;
 		}
 		
-		if (arrayID[id]->pos >= arrayID[id]->file->Length()) // cuối file
+		if (file->pos >= file->file->Length()) // cuối file
 		{
 			// trả về giá trị
 			machine->WriteRegister(2, -2);
@@ -394,8 +362,8 @@ void readFile()
 			return;
 		}
 
-		pos = arrayID[id]->pos;
-		bytesRead = arrayID[id]->file->ReadAt(buffer, numByte, pos);
+		pos = file->pos;
+		bytesRead = file->file->ReadAt(buffer, numByte, pos);
 		if (bytesRead == -1)
 		{
 			// trả về giá trị
@@ -408,13 +376,13 @@ void readFile()
 		
 		// cap nhat lai pos
 		pos = pos + bytesRead;
-		arrayID[id]->pos = pos;
+		file->pos = pos;
 		// trả về số byte đọc được
 		machine->WriteRegister(2, bytesRead);
 		delete[] buffer;
 	}
 }
-////
+/////
 void writeFile()
 {
 	int virtAddr, numByte, bytesWrite, pos;
@@ -440,11 +408,6 @@ void writeFile()
 	}
 	// id tập tin
 	id = machine->ReadRegister(6);
-	if (id >= MAXFILE || id < 0) // kiểm tra id hợp lệ
-	{
-		machine->WriteRegister(2, -1);
-		return;
-	}
 
 	buffer = User2System(virtAddr, numByte);
 
@@ -479,14 +442,15 @@ void writeFile()
 	}
 	else // xử lý file
 	{
+		FileCustom *file = currentThread->fileManage->GetFile(id);
 		// file không tồn tại hoặc đã bị đóng
-		if (id >= 10 || arrayID[id] == NULL)
+		if (file == NULL)
 		{
 			machine->WriteRegister(2, -1);
 			delete[] buffer;
 			return;
 		}
-		else if (arrayID[id]->type == ReadOnly) // tập tin ko cho phép ghi
+		else if (file->type == ReadOnly) // tập tin ko cho phép ghi
 		{
 			machine->WriteRegister(2, -1);
 			delete[] buffer;
@@ -494,8 +458,8 @@ void writeFile()
 		}
 
 		// ghi dữ liệu
-		pos = arrayID[id]->pos;
-		bytesWrite = arrayID[id]->file->WriteAt(buffer, numByte, pos);
+		pos = file->pos;
+		bytesWrite = file->file->WriteAt(buffer, numByte, pos);
 		if (bytesWrite == -1)
 		{
 			// trả về giá trị
@@ -505,32 +469,19 @@ void writeFile()
 		}
 
 		pos = pos + bytesWrite;
-		arrayID[id]->pos = pos;
+		file->pos = pos;
 		// trả về số byte ghi được
 		machine->WriteRegister(2, bytesWrite);
 		delete[] buffer;
 	}
 }
-
+/////
 void seek(){
 	int pos = machine->ReadRegister(4);
 	int id = machine->ReadRegister(5);
 
-	if (id >= MAXFILE || id < 2) // kiểm tra id hợp lệ
-	{
-		machine->WriteRegister(2, -1);
-		return;
-	}
+	int result = currentThread->fileManage->Seek(id, pos);
 
-	if(arrayID[id] == NULL){
-		machine->WriteRegister(2, -1);
-		return;
-	}
-	int len = arrayID[id]->file->Length();
-	if(pos < 0 || pos >= len){
-		pos = len - 1;
-	}
-	arrayID[id]->pos = pos;
-	machine->WriteRegister(2, pos);
+	machine->WriteRegister(2, result);
 	return;
 }

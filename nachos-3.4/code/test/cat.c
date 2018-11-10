@@ -22,7 +22,7 @@ int main(){
 			if(read_len != -1 && read_len != -2){
 				Write(data, read_len, ConsoleInput);
 			}
-		}while(read_len != -2);
+		}while(read_len != -2 && read_len != -1);
 		
 		Write("\n", 1, ConsoleInput);
 	}

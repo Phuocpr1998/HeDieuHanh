@@ -40,6 +40,7 @@ Thread::Thread(char* threadName)
     status = JUST_CREATED;
 #ifdef USER_PROGRAM
     space = NULL;
+	fileManage = new FileManage(10);
 #endif
 }
 
@@ -59,9 +60,13 @@ Thread::~Thread()
 {
     DEBUG('t', "Deleting thread \"%s\"\n", name);
 
+
     ASSERT(this != currentThread);
     if (stack != NULL)
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
+#ifdef USER_PROGRAM
+	delete fileManage;
+#endif
 }
 
 //----------------------------------------------------------------------
