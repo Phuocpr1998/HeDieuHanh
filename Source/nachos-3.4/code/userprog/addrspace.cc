@@ -60,11 +60,11 @@ SwapHeader (NoffHeader *noffH)
 //
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
-
+PageTableManage AddrSpace::pageTableManage;
 AddrSpace::AddrSpace(OpenFile *executable)
 {
 	NoffHeader noffH;
-	unsigned int i, size;
+	unsigned int i, size, j;
 
 	executable->ReadAt((char *)&noffH, sizeof(noffH), 0);
 	if ((noffH.noffMagic != NOFFMAGIC) && 
@@ -88,39 +88,72 @@ AddrSpace::AddrSpace(OpenFile *executable)
 					numPages, size);
 // first, set up the translation 
 	pageTable = new TranslationEntry[numPages];
+	arr = new int[numPages];
 	for (i = 0; i < numPages; i++) {
-	pageTable[i].virtualPage = i;	// for now, virtual page # = phys page #
-	pageTable[i].physicalPage = i;
-	pageTable[i].valid = TRUE;
-	pageTable[i].use = FALSE;
-	pageTable[i].dirty = FALSE;
-	pageTable[i].readOnly = FALSE;  // if the code segment was entirely on 
-					// a separate page, we could set its 
-					// pages to be read-only
+		int index;
+		index = AddrSpace::pageTableManage.FindFreeSlot();
+		if (index >= 0) {
+			pageTable[i].virtualPage = i;	// for now, virtual page # = phys page #
+			pageTable[i].physicalPage = index;
+			pageTable[i].valid = TRUE;
+			pageTable[i].use = FALSE;
+			pageTable[i].dirty = FALSE;
+			pageTable[i].readOnly = FALSE;  // if the code segment was entirely on 
+							// a separate page, we could set its 
+							// pages to be read-only
+			arr[i] = index;
+			AddrSpace::pageTableManage.Add(index);
+		}
+		else {
+			pageTable = NULL;
+			goto END;
+		}
+	
 	}
 	
 // zero out the entire address space, to zero the unitialized data segment 
 // and the stack segment
-	bzero(machine->mainMemory, size);
+	//bzero(machine->mainMemory, size);
 
 // then, copy in the code and data segments into memory
+	/*if (noffH.initData.size > 0) {
+		DEBUG('a', "Initializing data segment, at 0x%x, size %d\n",
+			noffH.initData.virtualAddr, noffH.initData.size);
+		printf("Initializing data segment, at 0x%x, size %d\n",
+			noffH.initData.virtualAddr, noffH.initData.size);
+		executable->ReadAt(&(machine->mainMemory[noffH.initData.virtualAddr]),
+			noffH.initData.size, noffH.initData.inFileAddr);
+	}*/
 	if (noffH.code.size > 0) {
-		DEBUG('a', "Initializing code segment, at 0x%x, size %d\n", 
+		DEBUG('a', "Initializing code segment, at 0x%x, size %d\n",
 			noffH.code.virtualAddr, noffH.code.size);
 		printf("Initializing code segment, at 0x%x, size %d\n",
 			noffH.code.virtualAddr, noffH.code.size);
-		executable->ReadAt(&(machine->mainMemory[noffH.code.virtualAddr]),
-			noffH.code.size, noffH.code.inFileAddr);
+		for (i = 0; i < (noffH.code.size - 1) / PageSize; i++) {
+			executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
+				PageSize, noffH.code.inFileAddr + i * PageSize);
+		}
+		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
+			noffH.code.size - (i * PageSize), noffH.code.inFileAddr + i * PageSize);
 	}
 	if (noffH.initData.size > 0) {
 		DEBUG('a', "Initializing data segment, at 0x%x, size %d\n", 
 			noffH.initData.virtualAddr, noffH.initData.size);
 		printf("Initializing data segment, at 0x%x, size %d\n",
 			noffH.initData.virtualAddr, noffH.initData.size);
-		executable->ReadAt(&(machine->mainMemory[noffH.initData.virtualAddr]),
-			noffH.initData.size, noffH.initData.inFileAddr);
+		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize + noffH.code.size - (i * PageSize)]),
+			PageSize - (noffH.code.size - (i * PageSize)), noffH.initData.inFileAddr);
+		j = 0;
+		i++;
+		for (; i < (noffH.code.size + noffH.initData.size - 1) / PageSize; i++) {
+			executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
+				PageSize, noffH.initData.inFileAddr + j * PageSize);
+			j++;
+		}
+		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
+			(noffH.code.size + noffH.initData.size) - (i * PageSize), noffH.code.inFileAddr + i * PageSize);
 	}
-
+END:;
 }
 
 //----------------------------------------------------------------------
@@ -130,7 +163,14 @@ AddrSpace::AddrSpace(OpenFile *executable)
 
 AddrSpace::~AddrSpace()
 {
+	int *temp;
+	temp = arr;
+	while (temp) {
+		AddrSpace::pageTableManage.Free(temp[0]);
+		temp++;
+	}
    delete pageTable;
+   delete[]arr;
 }
 
 //----------------------------------------------------------------------

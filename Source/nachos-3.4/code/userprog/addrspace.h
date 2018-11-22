@@ -38,6 +38,7 @@ class AddrSpace {
 					// for now!
     unsigned int numPages;		// Number of pages in the virtual 
 					// address space
+	int *arr;
 
 	// quản lý pagetable
 	static PageTableManage pageTableManage;

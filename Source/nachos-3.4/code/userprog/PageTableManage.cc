@@ -4,7 +4,7 @@
 
 PageTableManage::PageTableManage()
 {
-	pageTable = new BitMap(PageSize);
+	pageTable = new BitMap(NumPhysPages);
 }
 
 int PageTableManage::FindFreeSlot()
