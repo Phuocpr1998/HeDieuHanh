@@ -35,6 +35,7 @@ void openFile();
 void readFile();
 void writeFile();
 void seek();
+void exec();
 
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
@@ -98,6 +99,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_Seek:
 			seek();
+			break;
+		case SC_Exec:
+			exec();
 			break;
 		default:
 		  DEBUG('d', "Shutdown, don't have type in systemcall.\n");
@@ -484,4 +488,52 @@ void seek(){
 
 	machine->WriteRegister(2, result);
 	return;
+}
+
+void exec(){
+
+	int virtAddr;
+	char* progName;
+
+	//Lay ten file
+	virtAddr = machine->ReadRegister(4);
+	progName = User2System(virtAddr, MaxFileLength +1);
+
+
+	// new thread va cho no chay
+	Thread* execable = new Thread(progName);
+	execable->setStatus(RUNNING);
+
+	int id = threadManage->FindFreeSlot();
+
+	if (id != -1) // còn vị trí trông
+	{
+		if(execable == NULL){
+			machine->WriteRegister(2, -1);
+			return;
+		}
+		bool isOpen = threadManage->Add(id, execable);
+		
+
+		if (isOpen)
+		{
+			//Ngung Thread hien tai
+			//currentThread->Yield();
+
+			//ham StartProcess_2 nam trong file system.cc
+
+			execable->Fork(StartProcess_2, id);
+			machine->WriteRegister(2, id);
+			return;
+		}
+		else
+		{
+			machine->WriteRegister(2, -1);
+		}
+	}
+	else 
+	{
+		machine->WriteRegister(2, -1);
+	}
+
 }

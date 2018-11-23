@@ -78,7 +78,8 @@ USERPROG_H = ../userprog/addrspace.h\
 	../machine/translate.h\
 	../threads/synchcons.h\
 	../threads/FileManage.h\
-	../userprog/PageTableManage.h
+	../userprog/PageTableManage.h\
+	../threads/threadManage.h
 USERPROG_C = ../userprog/addrspace.cc\
 	../userprog/bitmap.cc\
 	../userprog/exception.cc\
@@ -89,10 +90,11 @@ USERPROG_C = ../userprog/addrspace.cc\
 	../machine/translate.cc\
 	../threads/synchcons.cc\
 	../threads/FileManage.cc\
-	../userprog/PageTableManage.cc
+	../userprog/PageTableManage.cc\
+	../threads/threadManage.cc\
 
 USERPROG_O = addrspace.o bitmap.o exception.o progtest.o console.o machine.o \
-	mipssim.o translate.o synchcons.o FileManage.o PageTableManage.o
+	mipssim.o translate.o synchcons.o FileManage.o PageTableManage.o threadManage.o
 
 VM_H = 
 VM_C = 

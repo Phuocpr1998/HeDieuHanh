@@ -15,12 +15,15 @@
 #include "interrupt.h"
 #include "stats.h"
 #include "timer.h"
+#include "threadManage.h"
+#include "addrspace.h"
 
 // Initialization and cleanup routines
 extern void Initialize(int argc, char **argv); 	// Initialization,
 						// called before anything else
 extern void Cleanup();				// Cleanup, called when
 						// Nachos is done.
+extern void StartProcess_2(int id);
 
 extern Thread *currentThread;			// the thread holding the CPU
 extern Thread *threadToBeDestroyed;  		// the thread that just finished
@@ -34,6 +37,7 @@ extern Timer *timer;				// the hardware alarm clock
 #include "synchcons.h"
 extern Machine* machine;	// user program memory and registers
 extern SynchConsole *gSynchConsole; // work with console
+extern ThreadManage* threadManage;
 #endif
 
 #ifdef FILESYS_NEEDED 		// FILESYS or FILESYS_STUB 
