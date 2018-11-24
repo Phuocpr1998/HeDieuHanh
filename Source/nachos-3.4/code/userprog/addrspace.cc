@@ -1,4 +1,4 @@
-// addrspace.cc 
+﻿// addrspace.cc 
 //	Routines to manage address spaces (executing user programs).
 //
 //	In order to run a user program, you must:
@@ -65,7 +65,7 @@ PageTableManage AddrSpace::pageTableManage;
 AddrSpace::AddrSpace(OpenFile *executable)
 {
 	NoffHeader noffH;
-	unsigned int i, size, j;
+	unsigned int i, size, j, temp;
 
 	executable->ReadAt((char *)&noffH, sizeof(noffH), 0);
 	if ((noffH.noffMagic != NOFFMAGIC) && 
@@ -121,10 +121,12 @@ AddrSpace::AddrSpace(OpenFile *executable)
 		DEBUG('a', "Initializing code segment, at 0x%x, size %d\n",
 			noffH.code.virtualAddr, noffH.code.size);
 		
+		//thêm n - 1 page đầu của code vào mainMemory
 		for (i = 0; i < (noffH.code.size - 1) / PageSize; i++) {
 			executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
 				PageSize, noffH.code.inFileAddr + i * PageSize);
 		}
+		//thêm phần còn lại của page cuối vào mainMemory
 		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
 			noffH.code.size - (i * PageSize), noffH.code.inFileAddr + i * PageSize);
 	}
@@ -133,17 +135,22 @@ AddrSpace::AddrSpace(OpenFile *executable)
 		DEBUG('a', "Initializing data segment, at 0x%x, size %d\n", 
 			noffH.initData.virtualAddr, noffH.initData.size);
 
+		//thêm 1 phần đầu initData vào phần còn lại của page cuối của phần code
 		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize + noffH.code.size - (i * PageSize)]),
 			PageSize - (noffH.code.size - (i * PageSize)), noffH.initData.inFileAddr);
 		j = 0;
+		//temp là phần đầu của initData đã thêm vào page cuối của code
+		temp = (PageSize - (noffH.code.size - (i * PageSize)));
 		i++;
+		//thêm page của initData vào mainMemory
 		for (; i < (noffH.code.size + noffH.initData.size - 1) / PageSize; i++) {
 			executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
-				PageSize, noffH.initData.inFileAddr + j * PageSize);
+				PageSize, noffH.initData.inFileAddr + temp + j * PageSize);
 			j++;
 		}
+		//thêm phần còn lại của page cuối vào mainMemory
 		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
-			(noffH.code.size + noffH.initData.size) - (i * PageSize), noffH.code.inFileAddr + j * PageSize);
+			(noffH.code.size + noffH.initData.size) - (i * PageSize), noffH.code.inFileAddr + temp + j * PageSize);
 	}
 }
 
