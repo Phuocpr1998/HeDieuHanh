@@ -82,3 +82,36 @@ ConsoleTest (char *in, char *out)
 	if (ch == 'q') return;  // if q, quit
     }
 }
+
+
+void
+StartProcess_2(int id)
+{
+	Thread* temp = threadManage->GetThread(id);
+	if (temp == NULL) {
+		printf("Cann't file thread");
+		return;
+	}
+		
+	char* filename = temp->getName();
+	OpenFile *executable = fileSystem->Open(filename);
+	AddrSpace *space;
+
+	if (executable == NULL) {
+		printf("Unable to open file %s\n", filename);
+		return;
+	}
+
+	space = new AddrSpace(executable);
+	currentThread->space = space;
+
+	delete executable;          // close file
+
+	space->InitRegisters();     // set the initial register values
+	space->RestoreState();      // load page table register
+
+	machine->Run();         // jump to the user progam
+	ASSERT(FALSE);          // machine->Run never returns;
+					// the address space exits
+					// by doing the syscall "exit"
+}

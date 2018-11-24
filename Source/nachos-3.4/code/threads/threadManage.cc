@@ -41,5 +41,6 @@ bool ThreadManage::EndThread(int id){
 	}
 
 	delete arr[id];
+	arr[id] = NULL;
 	return true;
 }

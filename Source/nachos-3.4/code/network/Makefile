@@ -41,8 +41,8 @@ main.o: ../threads/main.cc ../threads/copyright.h ../threads/utility.h \
  ../machine/disk.h ../userprog/addrspace.h ../filesys/filesys.h \
  ../filesys/openfile.h ../threads/FileManage.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/threadManage.h \
- ../threads/synchcons.h ../machine/console.h ../filesys/synchdisk.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synchcons.h \
+ ../machine/console.h ../threads/threadManage.h ../filesys/synchdisk.h \
  ../machine/disk.h ../threads/synch.h ../network/post.h \
  ../machine/network.h ../threads/synchlist.h ../threads/synch.h
 list.o: ../threads/list.cc ../threads/copyright.h ../threads/list.h \
@@ -72,7 +72,7 @@ scheduler.o: ../threads/scheduler.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/system.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/threadManage.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/synchcons.h ../machine/console.h ../threads/threadManage.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
  ../network/post.h ../machine/network.h ../threads/synchlist.h \
  ../threads/synch.h
@@ -92,8 +92,8 @@ synch.o: ../threads/synch.cc ../threads/copyright.h ../threads/synch.h \
  ../filesys/filesys.h ../filesys/openfile.h ../threads/FileManage.h \
  ../threads/list.h ../threads/system.h ../threads/scheduler.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h
 synchlist.o: ../threads/synchlist.cc ../threads/copyright.h \
@@ -126,8 +126,8 @@ system.o: ../threads/system.cc ../threads/copyright.h ../threads/system.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h
 thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
@@ -146,7 +146,7 @@ thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
  ../threads/switch.h ../threads/synch.h ../threads/list.h \
  ../threads/system.h ../threads/scheduler.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/threadManage.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/synchcons.h ../machine/console.h ../threads/threadManage.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
  ../network/post.h ../machine/network.h ../threads/synchlist.h
 utility.o: ../threads/utility.cc ../threads/copyright.h \
@@ -176,8 +176,8 @@ threadtest.o: ../threads/threadtest.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h
 interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
@@ -196,8 +196,8 @@ interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
  ../machine/disk.h ../userprog/addrspace.h ../filesys/filesys.h \
  ../filesys/openfile.h ../threads/FileManage.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h
 sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
@@ -243,7 +243,7 @@ sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../machine/stats.h ../machine/timer.h \
- ../threads/threadManage.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/synchcons.h ../machine/console.h ../threads/threadManage.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
  ../network/post.h ../machine/network.h ../threads/synchlist.h \
  ../threads/synch.h
@@ -273,8 +273,8 @@ timer.o: ../machine/timer.cc ../threads/copyright.h ../machine/timer.h \
  ../machine/disk.h ../userprog/addrspace.h ../filesys/filesys.h \
  ../filesys/openfile.h ../threads/FileManage.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/threadManage.h \
- ../threads/synchcons.h ../machine/console.h ../filesys/synchdisk.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synchcons.h \
+ ../machine/console.h ../threads/threadManage.h ../filesys/synchdisk.h \
  ../machine/disk.h ../threads/synch.h ../network/post.h \
  ../machine/network.h ../threads/synchlist.h ../threads/synch.h
 addrspace.o: ../userprog/addrspace.cc ../threads/copyright.h \
@@ -293,8 +293,8 @@ addrspace.o: ../userprog/addrspace.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h ../userprog/addrspace.h \
  ../bin/noff.h ../userprog/PageTableManage.h
@@ -326,8 +326,8 @@ exception.o: ../userprog/exception.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h ../userprog/syscall.h \
  ../filesys/openfile.h
@@ -347,8 +347,8 @@ progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h ../userprog/addrspace.h
 console.o: ../machine/console.cc ../threads/copyright.h \
@@ -367,8 +367,8 @@ console.o: ../machine/console.cc ../threads/copyright.h \
  ../machine/disk.h ../userprog/addrspace.h ../filesys/filesys.h \
  ../filesys/openfile.h ../threads/FileManage.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/threadManage.h \
- ../threads/synchcons.h ../machine/console.h ../filesys/synchdisk.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synchcons.h \
+ ../machine/console.h ../threads/threadManage.h ../filesys/synchdisk.h \
  ../machine/disk.h ../threads/synch.h ../network/post.h \
  ../machine/network.h ../threads/synchlist.h ../threads/synch.h
 machine.o: ../machine/machine.cc ../threads/copyright.h \
@@ -387,8 +387,8 @@ machine.o: ../machine/machine.cc ../threads/copyright.h \
  ../machine/machine.h ../userprog/addrspace.h ../filesys/filesys.h \
  ../filesys/openfile.h ../threads/FileManage.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/threadManage.h \
- ../threads/synchcons.h ../machine/console.h ../filesys/synchdisk.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synchcons.h \
+ ../machine/console.h ../threads/threadManage.h ../filesys/synchdisk.h \
  ../machine/disk.h ../threads/synch.h ../network/post.h \
  ../machine/network.h ../threads/synchlist.h ../threads/synch.h
 mipssim.o: ../machine/mipssim.cc ../threads/copyright.h \
@@ -408,7 +408,7 @@ mipssim.o: ../machine/mipssim.cc ../threads/copyright.h \
  ../filesys/filesys.h ../filesys/openfile.h ../threads/FileManage.h \
  ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/threadManage.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/synchcons.h ../machine/console.h ../threads/threadManage.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
  ../network/post.h ../machine/network.h ../threads/synchlist.h \
  ../threads/synch.h
@@ -428,8 +428,8 @@ translate.o: ../machine/translate.cc ../threads/copyright.h \
  ../threads/system.h ../threads/utility.h ../threads/thread.h \
  ../machine/machine.h ../threads/FileManage.h ../threads/scheduler.h \
  ../threads/list.h ../machine/interrupt.h ../threads/list.h \
- ../machine/stats.h ../machine/timer.h ../threads/threadManage.h \
- ../threads/synchcons.h ../machine/console.h ../filesys/synchdisk.h \
+ ../machine/stats.h ../machine/timer.h ../threads/synchcons.h \
+ ../machine/console.h ../threads/threadManage.h ../filesys/synchdisk.h \
  ../machine/disk.h ../threads/synch.h ../network/post.h \
  ../machine/network.h ../threads/synchlist.h ../threads/synch.h
 synchcons.o: ../threads/synchcons.cc ../threads/synchcons.h \
@@ -477,7 +477,7 @@ PageTableManage.o: ../userprog/PageTableManage.cc \
  ../filesys/filesys.h ../filesys/openfile.h ../threads/FileManage.h \
  ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/threadManage.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/synchcons.h ../machine/console.h ../threads/threadManage.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
  ../network/post.h ../machine/network.h ../threads/synchlist.h \
  ../threads/synch.h
@@ -525,8 +525,8 @@ filehdr.o: ../filesys/filehdr.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h ../filesys/filehdr.h \
  ../userprog/bitmap.h ../filesys/openfile.h
@@ -559,7 +559,7 @@ fstest.o: ../filesys/fstest.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../threads/FileManage.h \
  ../threads/scheduler.h ../threads/list.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/threadManage.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/synchcons.h ../machine/console.h ../threads/threadManage.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
  ../network/post.h ../machine/network.h ../threads/synchlist.h \
  ../threads/synch.h ../threads/thread.h
@@ -580,8 +580,8 @@ openfile.o: ../filesys/openfile.cc ../threads/copyright.h \
  ../machine/disk.h ../userprog/addrspace.h ../filesys/filesys.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../threads/synch.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../threads/synch.h \
  ../network/post.h ../machine/network.h ../threads/synchlist.h \
  ../threads/synch.h
 synchdisk.o: ../filesys/synchdisk.cc ../threads/copyright.h \
@@ -614,8 +614,8 @@ disk.o: ../machine/disk.cc ../threads/copyright.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h
 nettest.o: ../network/nettest.cc ../threads/copyright.h \
@@ -634,8 +634,8 @@ nettest.o: ../network/nettest.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h ../network/post.h
 post.o: ../network/post.cc ../threads/copyright.h ../network/post.h \
@@ -670,8 +670,8 @@ network.o: ../machine/network.cc ../threads/copyright.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/FileManage.h ../threads/scheduler.h ../threads/list.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
- ../machine/timer.h ../threads/threadManage.h ../threads/synchcons.h \
- ../machine/console.h ../filesys/synchdisk.h ../machine/disk.h \
+ ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
+ ../threads/threadManage.h ../filesys/synchdisk.h ../machine/disk.h \
  ../threads/synch.h ../network/post.h ../machine/network.h \
  ../threads/synchlist.h ../threads/synch.h
 # DEPENDENCIES MUST END AT END OF FILE

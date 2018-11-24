@@ -15,7 +15,6 @@
 #include "interrupt.h"
 #include "stats.h"
 #include "timer.h"
-#include "threadManage.h"
 #include "addrspace.h"
 
 // Initialization and cleanup routines
@@ -35,6 +34,7 @@ extern Timer *timer;				// the hardware alarm clock
 #ifdef USER_PROGRAM
 #include "machine.h"
 #include "synchcons.h"
+#include "threadManage.h"
 extern Machine* machine;	// user program memory and registers
 extern SynchConsole *gSynchConsole; // work with console
 extern ThreadManage* threadManage;

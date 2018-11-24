@@ -3,8 +3,9 @@
 int main()
 {
 	int i = 0;
-	for(i; i< 1000; i++)
+	for(i; i < 1000; i++)
 	{
-		Write("B", 2, ConsoleInput);
+		Write("B", 1, ConsoleInput);
 	}
+	
 }

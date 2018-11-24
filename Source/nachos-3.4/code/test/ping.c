@@ -7,8 +7,7 @@ int main()
 	int i=0;
 	for(i; i< 1000; i++)
 	{
-		Write("A", 2, ConsoleInput);
+		Write("A", 1, ConsoleInput);
 	}
-	Read(name, MAXLEN, ConsoleOutput);
 
 }

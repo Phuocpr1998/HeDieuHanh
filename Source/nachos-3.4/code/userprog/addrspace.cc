@@ -61,6 +61,7 @@ SwapHeader (NoffHeader *noffH)
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
 PageTableManage AddrSpace::pageTableManage;
+
 AddrSpace::AddrSpace(OpenFile *executable)
 {
 	NoffHeader noffH;
@@ -93,7 +94,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 		int index;
 		index = AddrSpace::pageTableManage.FindFreeSlot();
 		if (index >= 0) {
-			pageTable[i].virtualPage = i;	// for now, virtual page # = phys page #
+			pageTable[i].virtualPage = index;	// for now, virtual page # = phys page #
 			pageTable[i].physicalPage = index;
 			pageTable[i].valid = TRUE;
 			pageTable[i].use = FALSE;
@@ -106,7 +107,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 		}
 		else {
 			pageTable = NULL;
-			goto END;
+			return;
 		}
 	
 	}
@@ -116,19 +117,10 @@ AddrSpace::AddrSpace(OpenFile *executable)
 	//bzero(machine->mainMemory, size);
 
 // then, copy in the code and data segments into memory
-	/*if (noffH.initData.size > 0) {
-		DEBUG('a', "Initializing data segment, at 0x%x, size %d\n",
-			noffH.initData.virtualAddr, noffH.initData.size);
-		printf("Initializing data segment, at 0x%x, size %d\n",
-			noffH.initData.virtualAddr, noffH.initData.size);
-		executable->ReadAt(&(machine->mainMemory[noffH.initData.virtualAddr]),
-			noffH.initData.size, noffH.initData.inFileAddr);
-	}*/
 	if (noffH.code.size > 0) {
 		DEBUG('a', "Initializing code segment, at 0x%x, size %d\n",
 			noffH.code.virtualAddr, noffH.code.size);
-		printf("Initializing code segment, at 0x%x, size %d\n",
-			noffH.code.virtualAddr, noffH.code.size);
+		
 		for (i = 0; i < (noffH.code.size - 1) / PageSize; i++) {
 			executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
 				PageSize, noffH.code.inFileAddr + i * PageSize);
@@ -136,11 +128,11 @@ AddrSpace::AddrSpace(OpenFile *executable)
 		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
 			noffH.code.size - (i * PageSize), noffH.code.inFileAddr + i * PageSize);
 	}
+
 	if (noffH.initData.size > 0) {
 		DEBUG('a', "Initializing data segment, at 0x%x, size %d\n", 
 			noffH.initData.virtualAddr, noffH.initData.size);
-		printf("Initializing data segment, at 0x%x, size %d\n",
-			noffH.initData.virtualAddr, noffH.initData.size);
+
 		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize + noffH.code.size - (i * PageSize)]),
 			PageSize - (noffH.code.size - (i * PageSize)), noffH.initData.inFileAddr);
 		j = 0;
@@ -151,9 +143,8 @@ AddrSpace::AddrSpace(OpenFile *executable)
 			j++;
 		}
 		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
-			(noffH.code.size + noffH.initData.size) - (i * PageSize), noffH.code.inFileAddr + i * PageSize);
+			(noffH.code.size + noffH.initData.size) - (i * PageSize), noffH.code.inFileAddr + j * PageSize);
 	}
-END:;
 }
 
 //----------------------------------------------------------------------

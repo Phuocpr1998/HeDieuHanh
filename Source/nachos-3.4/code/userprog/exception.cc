@@ -104,8 +104,8 @@ ExceptionHandler(ExceptionType which)
 			exec();
 			break;
 		default:
-		  DEBUG('d', "Shutdown, don't have type in systemcall.\n");
-			interrupt->Halt();
+			/*DEBUG('d', "Shutdown, don't have type in systemcall.\n");
+			interrupt->Halt();*/
 			break;
 		}
 		// tăng program counter
@@ -503,7 +503,6 @@ void exec(){
 	// new thread va cho no chay
 	Thread* execable = new Thread(progName);
 	execable->setStatus(RUNNING);
-
 	int id = threadManage->FindFreeSlot();
 
 	if (id != -1) // còn vị trí trông
@@ -514,7 +513,6 @@ void exec(){
 		}
 		bool isOpen = threadManage->Add(id, execable);
 		
-
 		if (isOpen)
 		{
 			//Ngung Thread hien tai
