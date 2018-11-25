@@ -106,10 +106,10 @@ AddrSpace::AddrSpace(OpenFile *executable)
 			AddrSpace::pageTableManage.Add(index);
 		}
 		else {
+			delete pageTable;
 			pageTable = NULL;
-			return;
+			ASSERT(index >= 0); // báo lỗi hết bộ nhớ
 		}
-	
 	}
 	
 // zero out the entire address space, to zero the unitialized data segment 
