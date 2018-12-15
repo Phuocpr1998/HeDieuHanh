@@ -107,6 +107,7 @@ int Read(char *buffer, int charcount, OpenFileId id);
 
 int Seek(int pos, OpenFileId id);
 
+
 ///////////////////////////////////////////////////////////////////////////
 /* User-level thread operations: Fork and Yield.  To allow multiple
  * threads to run within a user program. 

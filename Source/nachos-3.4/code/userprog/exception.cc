@@ -37,6 +37,8 @@ void writeFile();
 void seek();
 void exec();
 
+void join();
+void exit();
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
 char * User2System(int virtAddr, int limit);
@@ -102,6 +104,12 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_Exec:
 			exec();
+			break;
+		case SC_Join:
+			join();
+			break;
+		case SC_Exit:
+			exit();
 			break;
 		default:
 			/*DEBUG('d', "Shutdown, don't have type in systemcall.\n");
@@ -534,4 +542,25 @@ void exec(){
 		machine->WriteRegister(2, -1);
 	}
 
+}
+
+void join(){
+	int pid, ec;
+
+	pid = machine->ReadRegister(4);
+
+	ec = pTab->JoinUpdate(pid);
+
+	machine->WriteRegister(2,ec);
+}
+
+
+void exit(){
+	int exitStatus,ec ;
+
+	exitStatus = machine->ReadRegister(4);
+
+	ec = pTab->ExitUpdate(exitStatus);
+
+	machine->WriteRegister(2,ec);
 }
