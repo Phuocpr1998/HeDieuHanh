@@ -29,6 +29,8 @@
 #define SC_Fork		9
 #define SC_Yield	10
 #define SC_Seek		11
+#define SC_Up		12
+#define SC_Down     13
 
 #ifndef IN_ASM
 
@@ -63,6 +65,13 @@ SpaceId Exec(char *name);
  * Return the exit status.
  */
 int Join(SpaceId id); 	
+
+
+/* 1 is successful, not equals is failed
+*/
+int Up(char* name);
+
+int Down(char* name);
  
 
 /* File system operations: Create, Open, Read, Write, Close

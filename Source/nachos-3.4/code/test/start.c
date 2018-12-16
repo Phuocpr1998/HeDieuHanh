@@ -122,6 +122,22 @@ Exit:
 	j	$31
 	.end Exit
 
+	.globl Up
+	.ent	Up
+Up: 
+	addiu $2, $0, SC_Up
+	syscall
+	j	$31
+	.end Up
+
+	.globl Down
+	.ent	Down
+Down:
+	addiu $2, $0, SC_Down
+	syscall
+	j	$31
+	.end Down
+
 	.globl Exec
 	.ent	Exec
 Exec:

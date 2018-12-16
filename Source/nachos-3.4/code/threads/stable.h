@@ -7,6 +7,7 @@
 #include "schandle.h"
 #include "semaphore.h"
 #include "system.h"
+#include <string.h>
 
 #define MAX_SEMAPHORE 10
 

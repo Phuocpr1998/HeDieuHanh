@@ -23,11 +23,17 @@
 
 #include "copyright.h"
 #include "system.h"
+#include "stable.h"
 #include "syscall.h"
 #include "openfile.h"
 
 #define MAXBUFFER 1024
 
+//global variable
+Semaphore* addrLock;
+BitMap* gPhysPageBitMap;
+PTable* pTab;
+STable* semTab = new STable();
 
 void createFile();
 void closeFile();
@@ -39,6 +45,8 @@ void exec();
 
 void join();
 void exit();
+void up();
+void down();
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
 char * User2System(int virtAddr, int limit);
@@ -110,6 +118,12 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_Exit:
 			exit();
+			break;
+		case SC_Up:
+			up();
+			break;
+		case SC_Down:
+			down();
 			break;
 		default:
 			/*DEBUG('d', "Shutdown, don't have type in systemcall.\n");
@@ -563,4 +577,28 @@ void exit(){
 	ec = pTab->ExitUpdate(exitStatus);
 
 	machine->WriteRegister(2,ec);
+}
+
+void up() {
+	int virtAddr, result;
+	char* semName; //name of semephore
+	// lấy địa chỉ name
+	virtAddr = machine->ReadRegister(4);
+	semName = User2System(virtAddr, MaxFileLength + 1);
+	result = semTab->Signal(semName);
+
+	//return result
+	machine->WriteRegister(2, result);
+}
+
+void down() {
+	int virtAddr, result;
+	char* semName; //name of semephore
+	// lấy địa chỉ name
+	virtAddr = machine->ReadRegister(4);
+	semName = User2System(virtAddr, MaxFileLength + 1);
+	result = semTab->Wait(semName);
+
+	//return result
+	machine->WriteRegister(2, result);
 }
