@@ -135,6 +135,14 @@ Down:
 	syscall
 	j	$31
 	.end Down
+
+	.globl CreateSemaphore
+	.ent	CreateSemaphore
+CreateSemaphore:
+	addiu $2, $0, SC_CreateSemaphore
+	syscall
+	j	$31
+	.end CreateSemaphore
 	
 	.globl Join
 	.ent Join

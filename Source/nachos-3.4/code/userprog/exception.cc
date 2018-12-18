@@ -47,6 +47,7 @@ void join();
 void exit();
 void up();
 void down();
+void createSemaphore();
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
 char * User2System(int virtAddr, int limit);
@@ -124,6 +125,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_Down:
 			down();
+			break;
+		case SC_CreateSemaphore:
+			createSemaphore();
 			break;
 		default:
 			/*DEBUG('d', "Shutdown, don't have type in systemcall.\n");
@@ -601,4 +605,22 @@ void down() {
 
 	//return result
 	machine->WriteRegister(2, result);
+}
+
+void createSemaphore(){
+	char* name;
+	int virtAddr, semval;
+	int result;
+	virtAddr = machine->ReadRegister(4);
+	semval = machine->ReadRegister(5);
+	name = User2System(virtAddr, MaxFileLength + 1);
+
+	result = semTab->Create(name, semval);
+	if(result == -1){
+		printf("Already exist!\n");
+	}
+	else if(result == -2){
+		printf("Out of bitmap!\n");
+	}
+	machine->WriteRegister(2,result);
 }

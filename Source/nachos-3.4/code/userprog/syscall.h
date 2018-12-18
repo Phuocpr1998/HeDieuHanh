@@ -31,6 +31,7 @@
 #define SC_Seek		11
 #define SC_Up		12
 #define SC_Down     13
+#define SC_CreateSemaphore 14
 
 #ifndef IN_ASM
 
@@ -72,6 +73,8 @@ int Join(SpaceId id);
 int Up(char* name);
 
 int Down(char* name);
+
+int CreateSemaphore(char* name, int semval);
  
 
 /* File system operations: Create, Open, Read, Write, Close
