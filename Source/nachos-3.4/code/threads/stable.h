@@ -3,14 +3,14 @@
 
 #include "copyright.h"
 #include "bitmap.h"
-#include "pcb.h"
+#include "sem.h"
 #include "synch.h"
 #include "system.h"
 #include <string.h>
 
 #define MAX_SEMAPHORE 10
 
-class Stable{
+class STable{
 private:
 	BitMap* bm;// quản lý slot trống
 	Sem* semTab[MAX_SEMAPHORE];// quản lý tối đa 10 đối tượng Sem
@@ -24,6 +24,6 @@ public:
 	int Wait(char* name); // Nếu tồn tại Semaphore “name” thì gọi this->P() để thực thi. Ngược lại, báo lỗi.
 	int Signal(char* name); // Nếu tồn tại Semaphore “name” thì gọi this->V()để thực thi. Ngược lại, báo lỗi.
 	int FindFreeSlot(int id); // Tìm slot trống.
-}
+};
 
 #endif

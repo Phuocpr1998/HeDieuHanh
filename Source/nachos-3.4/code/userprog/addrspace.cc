@@ -20,6 +20,7 @@
 #include "addrspace.h"
 #include "noff.h"
 #include "PageTableManage.h"
+#include "synch.h"
 #ifdef HOST_SPARC
 #include <strings.h>
 #endif

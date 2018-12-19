@@ -1,6 +1,6 @@
 #include "stable.h"
 
-STable::Stable() {
+STable::STable() {
 	bm = new BitMap(MAX_SEMAPHORE);
 	for (int i = 0; i < MAX_SEMAPHORE; i++) {
 		semTab[i] = NULL;

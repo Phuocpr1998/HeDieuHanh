@@ -1,7 +1,7 @@
 ﻿#ifndef PCB_H
 #define PCB_H
-#include "synch.h"
 #include "string.h"
+#include "synch.h"
 
 class PCB 
 {
@@ -17,7 +17,6 @@ public:
 	int parentID; 
 	PCB(); 
 	PCB(int id); 
-	~PCB();
 	// nạp chương trình có tên lưu trong biến filename và processID là pid 
 	int Exec(char *filename, int pid); // Tạo 1 thread mới có tên là filename và process là pid 
 	int GetID();					// Trả về ProcessID của tiến trình gọi thực hiện
@@ -32,6 +31,7 @@ public:
 	int GetExitCode();				// Trả về exitcode 
 	void SetFileName(char* fn);		// Đặt tên của tiến trình
 	char* GetFileName();			// Trả về tên của tiến trình 		 
+	~PCB();
 };
 
 #endif // !PCB_H

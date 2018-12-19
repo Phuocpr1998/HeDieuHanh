@@ -17,5 +17,5 @@ public:
 	void wait(); // thực hiện thao tác chờ
 	void signal(); // thực hiện thao tác giải phóng Semaphore
 	char* GetName(); // Trả về tên của Semaphore
-}
+};
 #endif

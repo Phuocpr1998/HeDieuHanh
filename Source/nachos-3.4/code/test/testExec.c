@@ -4,14 +4,15 @@
 
 int main(){
 
-	int pingID =0 ;
+	int pingID = 0;
 	int pongID = 0;
+	char a[] = "./test/ping";
+	char b[] = "./test/pong";
 
-	char name[MAXLEN];
+	char name[1];
 
-	pingID = Exec("./test/ping");
-
-	pongID = Exec("./test/pong");
+	pingID = Exec(a);
+	pongID = Exec(b);
 
 	// wait
 	Read(name, 1, ConsoleOutput);

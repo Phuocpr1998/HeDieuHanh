@@ -1,13 +1,26 @@
 #include "ptable.h"
+#include "system.h"
+
+PTable::PTable()
+{
+	psize = 0;
+	for (int i = 0; i < MAX_PROCESS; i++) {
+		pcb[i] = NULL;
+	}
+	bmsem = NULL;
+	bm = NULL;
+}
 
 PTable::PTable(int size){
+	if (size > MAX_PROCESS)
+		size = MAX_PROCESS;
 
 	psize = size;
 	bm = new BitMap(size);
 	bmsem = new Semaphore("bmsem", 1);
 
-	for(int i=0, i < MAX_PROCESS, i++){
-		pcb[i] = 0;//null :v 
+	for (int i = 0; i < size; i++) {
+		pcb[i] = NULL;
 	}
 
 	bm->Mark(0);
@@ -26,7 +39,7 @@ PTable::~PTable(){
 		delete bmsem;
 	}
 
-	for(int i =0, i < MAX_PROCESS, i++){
+	for (int i = 0; i < this->psize; i++) {
 		if(pcb[i] != 0){
 			delete pcb[i];
 		}
@@ -56,8 +69,8 @@ int PTable::ExecUpdate(char* name){
 
 	//So sánh tên chương trình và tên của currentThread để chắc chắn rằng chương trình này không gọi
     //thực thi chính nó.
-
-    if(strcmp(name,currentThread->getName())== 0){
+	char * nameParentThread = currentThread->getName();
+	if (strcmp(name, nameParentThread) == 0) {
     	printf("Unable to execute it self!!!");
     	bmsem->V();
     	return -1;
@@ -76,32 +89,56 @@ int PTable::ExecUpdate(char* name){
     //processID của currentThread.
 
     pcb[freeSlot] = new PCB(freeSlot);
-    pcb[freeSlot]->parrentID = currentThread->processID
+	int parentID = -1;
+	for (int i = 0; i < this->psize; i++)
+	{
+		if (pcb[i] != NULL)
+		{
+			if (strcmp(nameParentThread, pcb[i]->GetFileName()) == 0)
+			{
+				parentID = pcb[i]->GetID();
+				break;
+			}
+		}
+	}
 
-    //Danh dau da su dung ????
+	if (parentID == -1)
+	{
+		printf("No have parent");
+		bmsem->V();
+		return -1;
+	}
+	
+	pcb[freeSlot]->parentID = parentID;
 
     //Gọi thực thi phương thức Exec của lớp PCB.
-    int pID = pcb[freeSlot]->Exec(name, freeSlot)
+	int pID = pcb[freeSlot]->Exec(name, freeSlot);
 
     //Gọi bmsem->V().
 	//Trả về kết quả thực thi của PCB->Exec.
-
     bmsem->V();
 
     return pID;
 }
 
 int PTable::ExitUpdate(int ec){	
-
-	//KT pid co ton tai khong
-	int pid = currentThread->processID;
-
-	if(this->IsExist(pid) == false){
-		printf("Tien trinh khong ton tai\n");
-		return -1;
+	char * nameParentThread = currentThread->getName();
+	int pid = -1;
+	for (int i = 0; i < this->psize; i++)
+	{
+		if (pcb[i] != NULL)
+		{
+			if (strcmp(nameParentThread, pcb[i]->GetFileName()) == 0)
+			{
+				pid = i;
+				break;
+			}
+		}
 	}
-	//freeSpace
-	currentThread->FreeSpace()
+
+	if (pid == -1)
+		return -1;
+
 	//Nếu tiến trình gọi là main process thì gọi Halt().
 	if(pid == 0){
 		interrupt->Halt();
@@ -116,20 +153,29 @@ int PTable::ExitUpdate(int ec){
     pcb[pid]->ExitWait();
 
     this->Remove(pid);
-
     return ec;
 }
 
 int PTable::JoinUpdate(int id){
-
-	int parrentID = currentThread->currentThread;
-	//check
-	if(id < 0){
-		printf("id khong hop le\n");
-		return -1;
+	char * nameParentThread = currentThread->getName();
+	int parrentID = -1;
+	for (int i = 0; i < this->psize; i++)
+	{
+		if (pcb[i] != NULL)
+		{
+			if (strcmp(nameParentThread, pcb[i]->GetFileName()) == 0)
+			{
+				parrentID = i;
+				break;
+			}
+		}
 	}
-	//kt xem phai la parent cua tien trinh co pid = id hay khong
-	if(parrentID != pcb[id]->parrentID){
+
+	if (parrentID == -1)
+		return -1;
+
+	//kt xem phai la parent cua tien trinh co parrentID = id hay khong
+	if(parrentID != pcb[id]->parentID){
 		printf("khong phai la tien trinh cha cua %d",id);
 		return -1;
 	}
@@ -154,12 +200,14 @@ bool PTable::IsExist(int pid){
 	return bm->Test(pid);
 }
 
-void PTable::Remove(int pid){
+void PTable::Remove(int pid)
+{
 	bm->Clear(pid);
-	if(pcb[pid] !=0)
+	if(pcb[pid] != NULL)
 		delete pcb[pid];
 }
 
-char* PTable::GetFileName(int id){
+char* PTable::GetFileName(int id)
+{
 	return pcb[id]->GetFileName();
 }

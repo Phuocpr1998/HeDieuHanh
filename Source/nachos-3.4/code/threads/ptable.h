@@ -5,7 +5,6 @@
 #include "bitmap.h"
 #include "pcb.h"
 #include "synch.h"
-#include "system.h"
 
 #define MAX_PROCESS 10
 
@@ -18,6 +17,7 @@ private:
 	// đánh dấu các vị trí đã được sử dụng trong pcb
 	// dùng để ngăn chặn trường hợp nạp 2 tiến trình cùng lúc
 public:
+	PTable();
 	// khởi tạo size đối tượng PCB để lưu size process. Gán giá trị ban đầu là null
 	// nhớ khởi tạo bm và bmsem để sử dụng
 	PTable(int size);
@@ -29,6 +29,6 @@ public:
 	bool IsExist(int pid); // kiểm tra tồn tại processID này không?
 	void Remove(int pid); // khi tiến trình kết thúc, delete processID ra khỏi mang ql no
 	char* GetFileName(int id);// Trả về tên của tiến trình
-}
+};
 
 #endif

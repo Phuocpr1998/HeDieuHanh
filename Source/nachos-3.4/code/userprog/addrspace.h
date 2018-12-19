@@ -15,10 +15,10 @@
 
 #include "copyright.h"
 #include "filesys.h"
-#include "synch.h"
 
 #define UserStackSize		1024 	// increase this as necessary!
 
+class Semaphore;
 class PageTableManage;
 
 class AddrSpace {
@@ -41,6 +41,7 @@ class AddrSpace {
     unsigned int numPages;		// Number of pages in the virtual 
 					// address space
 	int *arr;
+
 	static Semaphore *sem;
 	// quản lý pagetable
 	static PageTableManage pageTableManage;

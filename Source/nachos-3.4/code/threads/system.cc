@@ -7,6 +7,10 @@
 
 #include "copyright.h"
 #include "system.h"
+#ifdef USER_PROGRAM	
+#include "stable.h"
+#include "ptable.h"
+#endif
 
 // This defines *all* of the global data structures used by Nachos.
 // These are all initialized and de-allocated by this file.
@@ -28,15 +32,15 @@ SynchDisk   *synchDisk;
 #endif
 
 #ifdef USER_PROGRAM	// requires either FILESYS or FILESYS_STUB
-Machine *machine;	// user program memory and registers
-SynchConsole *gSynchConsole;
-ThreadManage* threadManage;
+Machine* machine;	// user program memory and registers
+SynchConsole* gSynchConsole;
+PTable* pTab;
+STable* semTab;
 #endif
 
 #ifdef NETWORK
 PostOffice *postOffice;
 #endif
-
 
 // External definition, to allow us to take a pointer to this function
 extern void Cleanup();
@@ -151,7 +155,7 @@ Initialize(int argc, char **argv)
     
 #ifdef USER_PROGRAM
     machine = new Machine(debugUserProg);	// this must come first
-	pTab = new PTable();
+	pTab = new PTable(10);
 	semTab = new STable();
     gSynchConsole = new SynchConsole();
 #endif
