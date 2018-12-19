@@ -151,7 +151,8 @@ Initialize(int argc, char **argv)
     
 #ifdef USER_PROGRAM
     machine = new Machine(debugUserProg);	// this must come first
-	threadManage = new ThreadManage(); 
+	pTab = new PTable();
+	semTab = new STable();
     gSynchConsole = new SynchConsole();
 #endif
 
@@ -183,6 +184,8 @@ Cleanup()
 #ifdef USER_PROGRAM
     delete machine;
 	delete gSynchConsole;
+	delete pTab;
+	delete semTab;
 #endif
 
 #ifdef FILESYS_NEEDED

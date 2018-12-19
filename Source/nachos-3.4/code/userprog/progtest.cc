@@ -87,7 +87,7 @@ ConsoleTest (char *in, char *out)
 void
 StartProcess_2(int id)
 {
-	Thread* temp = threadManage->GetThread(id);
+	Thread* temp = (Thread*)id;
 	if (temp == NULL) {
 		printf("Cann't file thread");
 		return;

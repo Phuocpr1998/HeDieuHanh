@@ -5,7 +5,7 @@
 #include "bitmap.h"
 #include "pcb.h"
 #include "schandle.h"
-#include "semaphore.h"
+#include "synch.h"
 #include "system.h"
 
 #define MAX_PROCESS 10

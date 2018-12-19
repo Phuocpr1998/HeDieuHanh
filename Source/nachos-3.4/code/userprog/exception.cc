@@ -30,11 +30,6 @@
 #define MAXBUFFER 1024
 
 //global variable
-Semaphore* addrLock;
-BitMap* gPhysPageBitMap;
-PTable* pTab;
-STable* semTab = new STable();
-
 void createFile();
 void closeFile();
 void openFile();
@@ -517,7 +512,6 @@ void seek(){
 }
 
 void exec(){
-
 	int virtAddr;
 	char* progName;
 
@@ -525,41 +519,16 @@ void exec(){
 	virtAddr = machine->ReadRegister(4);
 	progName = User2System(virtAddr, MaxFileLength +1);
 
-
-	// new thread va cho no chay
-	Thread* execable = new Thread(progName);
-	execable->setStatus(RUNNING);
-	int id = threadManage->FindFreeSlot();
-
-	if (id != -1) // còn vị trí trông
-	{
-		if(execable == NULL){
-			machine->WriteRegister(2, -1);
-			return;
-		}
-		bool isOpen = threadManage->Add(id, execable);
-		
-		if (isOpen)
-		{
-			//Ngung Thread hien tai
-			//currentThread->Yield();
-
-			//ham StartProcess_2 nam trong file system.cc
-
-			execable->Fork(StartProcess_2, id);
-			machine->WriteRegister(2, id);
-			return;
-		}
-		else
-		{
-			machine->WriteRegister(2, -1);
-		}
-	}
-	else 
+	if (progName == NULL)
 	{
 		machine->WriteRegister(2, -1);
+		return;
 	}
 
+	int idProcess = pTab->ExecUpdate(progName);
+	machine->WriteRegister(2, idProcess);
+
+	delete[] progName;
 }
 
 void join(){
