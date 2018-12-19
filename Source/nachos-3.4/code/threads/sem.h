@@ -2,11 +2,7 @@
 #define _SEM_H
 
 #include "copyright.h"
-#include "bitmap.h"
-#include "pcb.h"
-#include "schandle.h"
 #include "synch.h"
-#include "system.h"
 #include <string.h>
 
 class Sem{

@@ -4,8 +4,7 @@
 #include "copyright.h"
 #include "bitmap.h"
 #include "pcb.h"
-#include "schandle.h"
-#include "sem.h"
+#include "synch.h"
 #include "system.h"
 #include <string.h>
 

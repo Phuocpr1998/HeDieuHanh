@@ -61,9 +61,15 @@ SwapHeader (NoffHeader *noffH)
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
 PageTableManage AddrSpace::pageTableManage;
+Semaphore* AddrSpace::sem;
 
 AddrSpace::AddrSpace(OpenFile *executable)
 {
+
+	if (AddrSpace::sem == NULL) {
+		AddrSpace::sem = new Semaphore("addrspace", 1);
+	}
+
 	NoffHeader noffH;
 	unsigned int i, size, j, temp;
 
@@ -92,7 +98,9 @@ AddrSpace::AddrSpace(OpenFile *executable)
 	arr = new int[numPages];
 	for (i = 0; i < numPages; i++) {
 		int index;
+		AddrSpace::sem->P();
 		index = AddrSpace::pageTableManage.FindFreeSlot();
+		AddrSpace::sem->V();
 		if (index >= 0) {
 			pageTable[i].virtualPage = index;	// for now, virtual page # = phys page #
 			pageTable[i].physicalPage = index;
