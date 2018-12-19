@@ -7,5 +7,5 @@ int main()
 	{
 		Write("B", 1, ConsoleInput);
 	}
-	
+	Exit(0);
 }

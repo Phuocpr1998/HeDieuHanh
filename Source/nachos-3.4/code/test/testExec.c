@@ -14,5 +14,8 @@ int main(){
 	pongID = Exec("./test/pong");
 
 	// wait
-	Read(name, 1, ConsoleOutput);
+	//Read(name, 1, ConsoleOutput);
+
+	Join(pingID);
+	Join(pongID);
 }
