@@ -135,6 +135,7 @@ Initialize(int argc, char **argv)
     stats = new Statistics();			// collect statistics
     interrupt = new Interrupt;			// start up interrupt handling
     scheduler = new Scheduler();		// initialize the ready queue
+	semAddrSpace = new Semaphore("semaddrspace", 1);
     if (randomYield)				// start the timer (if needed)
 	timer = new Timer(TimerInterruptHandler, 0, randomYield);
 
@@ -196,6 +197,7 @@ Cleanup()
     delete timer;
     delete scheduler;
     delete interrupt;
+	delete semAddrSpace;
     
     Exit(0);
 }
