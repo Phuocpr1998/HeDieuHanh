@@ -41,8 +41,6 @@ class AddrSpace {
     unsigned int numPages;		// Number of pages in the virtual 
 					// address space
 	int *arr;
-
-	static Semaphore *sem;
 	// quản lý pagetable
 	static PageTableManage pageTableManage;
 };

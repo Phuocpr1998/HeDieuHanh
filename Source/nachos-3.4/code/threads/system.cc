@@ -36,6 +36,7 @@ Machine* machine;	// user program memory and registers
 SynchConsole* gSynchConsole;
 PTable* pTab;
 STable* semTab;
+Semaphore *semAddrSpace;
 #endif
 
 #ifdef NETWORK
@@ -139,6 +140,7 @@ Initialize(int argc, char **argv)
     stats = new Statistics();			// collect statistics
     interrupt = new Interrupt;			// start up interrupt handling
     scheduler = new Scheduler();		// initialize the ready queue
+	
     if (randomYield)				// start the timer (if needed)
 	timer = new Timer(TimerInterruptHandler, 0, randomYield);
 
@@ -158,6 +160,7 @@ Initialize(int argc, char **argv)
 	pTab = new PTable(10);
 	semTab = new STable();
     gSynchConsole = new SynchConsole();
+	semAddrSpace = new Semaphore("semaddrspace", 1);
 #endif
 
 #ifdef FILESYS
@@ -190,6 +193,7 @@ Cleanup()
 	delete gSynchConsole;
 	delete pTab;
 	delete semTab;
+	delete semAddrSpace;
 #endif
 
 #ifdef FILESYS_NEEDED
@@ -203,6 +207,7 @@ Cleanup()
     delete timer;
     delete scheduler;
     delete interrupt;
+	delete semAddrSpace;
     
     Exit(0);
 }
