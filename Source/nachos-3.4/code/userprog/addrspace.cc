@@ -61,7 +61,7 @@ SwapHeader (NoffHeader *noffH)
 //
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
-//PTable AddrSpace::pageTableManage;
+PageTableManage AddrSpace::pageTableManage;
 
 AddrSpace::AddrSpace(OpenFile *executable)
 {
@@ -96,7 +96,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 	for (i = 0; i < numPages; i++) {
 		int index;
 		semAddrSpace->P();
-		index = pTab->GetFreeSlot();
+		index = AddrSpace::pageTableManage.FindFreeSlot();
 		semAddrSpace->V();
 		if (index >= 0) {
 			pageTable[i].virtualPage = index;	// for now, virtual page # = phys page #
@@ -108,7 +108,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 							// a separate page, we could set its 
 							// pages to be read-only
 			arr[i] = index;
-			//AddrSpace::pageTableManage.Add(index);
+			AddrSpace::pageTableManage.Add(index);
 		}
 		else {
 			delete pageTable;
