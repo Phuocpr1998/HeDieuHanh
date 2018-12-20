@@ -15,6 +15,7 @@
 
 #include "copyright.h"
 #include "filesys.h"
+#include "ptable.h"
 
 #define UserStackSize		1024 	// increase this as necessary!
 
@@ -42,7 +43,7 @@ class AddrSpace {
 					// address space
 	int *arr;
 	// quản lý pagetable
-	static PageTableManage pageTableManage;
+	//static PTable pageTableManage;
 };
 
 #endif // ADDRSPACE_H

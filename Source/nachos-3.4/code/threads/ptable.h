@@ -11,9 +11,9 @@
 class PTable{
 private:
 	BitMap* bm;
-	PCB* pcb[MAX_PROCESS];
+	PCB *pcb[MAX_PROCESS];
 	int psize;
-	Semaphore* bmsem;
+	Semaphore *bmsem;
 	// đánh dấu các vị trí đã được sử dụng trong pcb
 	// dùng để ngăn chặn trường hợp nạp 2 tiến trình cùng lúc
 public:
