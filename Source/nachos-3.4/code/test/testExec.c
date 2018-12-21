@@ -8,9 +8,9 @@ int main(){
 	char a[1];
 	
 	pingID = Exec("./test/ping");
-	pongID = Exec("./test/pong");
+	//pongID = Exec("./test/pong");
 
 	Join(pingID);
-	Join(pongID);
-	Read(a, 1, ConsoleOutput);
+	//Join(pongID);
+	//Read(a, 1, ConsoleOutput);
 }

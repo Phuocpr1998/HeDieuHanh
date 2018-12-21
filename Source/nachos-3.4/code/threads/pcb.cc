@@ -5,8 +5,8 @@ PCB::PCB()
 {
 	numwait = 0;
 	this->filename = NULL;
-	this->joinsem = new Semaphore("joinsem", 1);
-	this->exitsem = new Semaphore("exitsem", 1);
+	this->joinsem = new Semaphore("joinsem", 0);
+	this->exitsem = new Semaphore("exitsem", 0);
 	this->multex = new Semaphore("multex", 1);
 }
 
@@ -16,8 +16,8 @@ PCB::PCB(int id)
 	this->id = id;
 	this->filename = NULL;
 
-	this->joinsem = new Semaphore("joinsem", 1);
-	this->exitsem = new Semaphore("exitsem", 1);
+	this->joinsem = new Semaphore("joinsem", 0);
+	this->exitsem = new Semaphore("exitsem", 0);
 	this->multex = new Semaphore("multex", 1);
 }
 
@@ -62,6 +62,7 @@ int PCB::GetNumWait()
 
 void PCB::JoinWait()
 {
+	printf("Join Wait\n");
 	joinsem->P();
 }
 

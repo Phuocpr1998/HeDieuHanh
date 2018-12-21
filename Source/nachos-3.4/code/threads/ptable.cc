@@ -157,6 +157,7 @@ int PTable::ExitUpdate(int ec){
 
 int PTable::JoinUpdate(int id){
 	char * nameParentThread = currentThread->getName();
+	printf("Join name: %s\n", nameParentThread);
 	int parrentID = -1;
 	for (int i = 0; i < this->psize; i++)
 	{
@@ -181,13 +182,13 @@ int PTable::JoinUpdate(int id){
 
 	//Tăng numwait và gọi JoinWait() để chờ tiến trình con thực hiện.
 	pcb[parrentID]->IncNumWait();
-	pcb[id]->JoinWait();
+	pcb[parrentID]->JoinWait();
 
 	//Xử lý exitcode.
 	int ec = pcb[id]->GetExitCode();
 	//Sau khi tiến trình con thực hiện xong, tiến trình đã được giải phóng,ExitRelease() để cho phép tiến trình con thoát.
 	pcb[id]->ExitRelease();
-
+	pcb[parrentID]->DecNumWait();
 	return ec;
 }
 
@@ -209,7 +210,6 @@ void PTable::Remove(int pid)
 char* PTable::GetFileName(int id)
 {
 	char *fileName = pcb[id]->GetFileName();
-	printf("GetFileName %s\n", fileName);
 	return fileName;
 }
 
