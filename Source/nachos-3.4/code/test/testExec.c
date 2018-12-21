@@ -8,9 +8,11 @@ int main(){
 	char a[1];
 	
 	pingID = Exec("./test/ping");
-	//pongID = Exec("./test/pong");
+	pongID = Exec("./test/pong");
 
-	Join(pingID);
-	//Join(pongID);
-	//Read(a, 1, ConsoleOutput);
+	if (pingID != -1 && pongID != -1)
+	{
+		Join(pingID);
+		Join(pongID);
+	}
 }

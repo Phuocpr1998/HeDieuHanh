@@ -13,6 +13,7 @@ private:
 	int numwait;		// số tiến trình đã join
 	int id;
 	char * filename;
+	Thread *thread;
 public: 
 	int parentID; 
 	PCB(); 
@@ -20,6 +21,7 @@ public:
 	// nạp chương trình có tên lưu trong biến filename và processID là pid 
 	int Exec(char *filename, int pid); // Tạo 1 thread mới có tên là filename và process là pid 
 	int GetID();					// Trả về ProcessID của tiến trình gọi thực hiện
+	Thread * GetThread();
 	int GetNumWait();				// Trả về số lượng tiến trình chờ 
 	void JoinWait();				// 1. Tiến trình cha đợi tiến trình con kết thúc
 	void ExitWait();				// 4. Tiến trình con kết thúc 

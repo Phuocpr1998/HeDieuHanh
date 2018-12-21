@@ -533,7 +533,6 @@ void join(){
 	int pid, ec;
 
 	pid = machine->ReadRegister(4);
-	printf("Join\n");
 	ec = pTab->JoinUpdate(pid);
 
 	machine->WriteRegister(2,ec);

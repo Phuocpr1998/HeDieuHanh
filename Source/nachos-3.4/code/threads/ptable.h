@@ -30,8 +30,7 @@ public:
 	bool IsExist(int pid); // kiểm tra tồn tại processID này không?
 	void Remove(int pid); // khi tiến trình kết thúc, delete processID ra khỏi mang ql no
 	char* GetFileName(int id);// Trả về tên của tiến trình
-
-	void SetNameMainProcess(char *name);
+	Thread * GetThread(int id); // Trả về Thread của tiến trình
 };
 
 #endif

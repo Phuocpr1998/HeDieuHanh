@@ -88,7 +88,6 @@ ConsoleTest (char *in, char *out)
 void
 StartProcess_2(int id)
 {
-
 	char* filename = pTab->GetFileName(id);//temp->getName();
 	OpenFile *executable = fileSystem->Open(filename);
 	AddrSpace *space;
@@ -98,8 +97,16 @@ StartProcess_2(int id)
 		return;
 	}
 
+	Thread *thread = pTab->GetThread(id);
+
+	if (thread == NULL)
+	{
+		printf("Thread is null\n");
+		return;
+	}
 	space = new AddrSpace(executable);
-	currentThread->space = space;
+	thread->space = space;
+	currentThread = thread;
 
 	delete executable;          // close file
 

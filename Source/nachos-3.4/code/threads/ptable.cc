@@ -121,13 +121,13 @@ int PTable::ExecUpdate(char* name){
 }
 
 int PTable::ExitUpdate(int ec){	
-	char * nameParentThread = currentThread->getName();
+	char * nameThread = currentThread->getName();
 	int pid = -1;
 	for (int i = 0; i < this->psize; i++)
 	{
 		if (pcb[i] != NULL)
 		{
-			if (strcmp(nameParentThread, pcb[i]->GetFileName()) == 0)
+			if (strcmp(nameThread, pcb[i]->GetFileName()) == 0)
 			{
 				pid = i;
 				break;
@@ -143,21 +143,25 @@ int PTable::ExitUpdate(int ec){
 		interrupt->Halt();
 		return 0;
 	}
-	currentThread->Finish();
+
 	//Ngược lại gọi SetExitCode để đặt exitcode cho tiến trình gọi.
+	int idParent = pcb[pid]->parentID;
 	pcb[pid]->SetExitCode(ec);
-	//Gọi JoinRelease để giải phóng tiến trình cha đang đợi nó(nếu có) và ExitWait() để xin tiến trình cha
-    //cho phép thoát.
-    pcb[pid]->JoinRelease();
-    pcb[pid]->ExitWait();
+	if (idParent != -1)
+	{
+		//Gọi JoinRelease để giải phóng tiến trình cha đang đợi nó(nếu có) và ExitWait() để xin tiến trình cha
+		//cho phép thoát.
+		pcb[idParent]->JoinRelease();
+		pcb[pid]->ExitWait();
+	}
 
     this->Remove(pid);
-    return ec;
+	currentThread->Finish();
+	return ec;
 }
 
 int PTable::JoinUpdate(int id){
 	char * nameParentThread = currentThread->getName();
-	printf("Join name: %s\n", nameParentThread);
 	int parrentID = -1;
 	for (int i = 0; i < this->psize; i++)
 	{
@@ -209,12 +213,18 @@ void PTable::Remove(int pid)
 
 char* PTable::GetFileName(int id)
 {
-	char *fileName = pcb[id]->GetFileName();
-	return fileName;
+	if (pcb[id] != NULL) {
+		char *fileName = pcb[id]->GetFileName();
+		return fileName;
+	}
+	return NULL;
 }
 
-void PTable::SetNameMainProcess(char * name)
+Thread * PTable::GetThread(int id)
 {
-	pcb[0]->SetFileName(name);
-	printf("%s\n", name);
+	if (pcb[id] != NULL) {
+		return pcb[id]->GetThread();
+	}
+	return NULL;
 }
+

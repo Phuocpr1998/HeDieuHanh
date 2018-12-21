@@ -8,6 +8,7 @@ PCB::PCB()
 	this->joinsem = new Semaphore("joinsem", 0);
 	this->exitsem = new Semaphore("exitsem", 0);
 	this->multex = new Semaphore("multex", 1);
+	thread = NULL;
 }
 
 PCB::PCB(int id)
@@ -19,6 +20,7 @@ PCB::PCB(int id)
 	this->joinsem = new Semaphore("joinsem", 0);
 	this->exitsem = new Semaphore("exitsem", 0);
 	this->multex = new Semaphore("multex", 1);
+	thread = NULL;
 }
 
 PCB::~PCB()
@@ -29,6 +31,8 @@ PCB::~PCB()
 	delete joinsem;
 	delete exitsem;
 	delete multex;
+	/*if (thread != NULL)
+		delete thread;*/
 }
 
 int PCB::Exec(char * filename, int pid)
@@ -37,22 +41,27 @@ int PCB::Exec(char * filename, int pid)
 	this->id = pid;
 
 	this->multex->P();
-	Thread* execable = new Thread(filename);
+	thread = new Thread(this->filename);
 	this->multex->V();
 
-	if (execable == NULL) {
+	if (thread == NULL) {
 		return -1;
 	}
 
 	//int threadId = (int)execable;
-	execable->setStatus(RUNNING);
-	execable->Fork(StartProcess_2, pid); //threadId
+	thread->setStatus(RUNNING);
+	thread->Fork(StartProcess_2, pid); //threadId
 	return this->id;
 }	
 
 int PCB::GetID()
 {
 	return this->id;
+}
+
+Thread * PCB::GetThread()
+{
+	return thread;
 }
 
 int PCB::GetNumWait()
@@ -62,7 +71,6 @@ int PCB::GetNumWait()
 
 void PCB::JoinWait()
 {
-	printf("Join Wait\n");
 	joinsem->P();
 }
 
