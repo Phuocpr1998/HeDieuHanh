@@ -4,9 +4,10 @@
 #include "copyright.h"
 #include "bitmap.h"
 #include "pcb.h"
-#include "synch.h"
 
 #define MAX_PROCESS 10
+
+class Semaphore;
 
 class PTable{
 private:
@@ -29,6 +30,8 @@ public:
 	bool IsExist(int pid); // kiểm tra tồn tại processID này không?
 	void Remove(int pid); // khi tiến trình kết thúc, delete processID ra khỏi mang ql no
 	char* GetFileName(int id);// Trả về tên của tiến trình
+
+	void SetNameMainProcess(char *name);
 };
 
 #endif

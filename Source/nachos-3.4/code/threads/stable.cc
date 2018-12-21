@@ -1,4 +1,6 @@
 #include "stable.h"
+#include "synch.h"
+#include "system.h"
 
 STable::STable() {
 	bm = new BitMap(MAX_SEMAPHORE);

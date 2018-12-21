@@ -1,5 +1,6 @@
 #include "ptable.h"
 #include "system.h"
+#include "synch.h"
 
 PTable::PTable()
 {
@@ -28,6 +29,7 @@ PTable::PTable(int size){
 	//Khoi tao PCB
 	pcb[0] = new PCB(0);//tien trinh co id = 0
 	pcb[0]->parentID = -1; // khong co tien trinh cha
+	pcb[0]->SetFileName("main");
 }
 
 PTable::~PTable(){
@@ -47,7 +49,6 @@ PTable::~PTable(){
 }
 
 int PTable::ExecUpdate(char* name){
-	printf("%s\n", name);
 	//Gọi mutex->P(); để giúp tránh tình trạng nạp 2 tiến trình cùng 1 lúc.
 	bmsem->P();
 
@@ -67,7 +68,6 @@ int PTable::ExecUpdate(char* name){
 		bmsem->V();
 		return -1;
 	}
-
 	//So sánh tên chương trình và tên của currentThread để chắc chắn rằng chương trình này không gọi
     //thực thi chính nó.
 	char * nameParentThread = currentThread->getName();
@@ -88,7 +88,7 @@ int PTable::ExecUpdate(char* name){
 
     //Nếu có slot trống thì khởi tạo một PCB mới với processID chính là index của slot này, parrentID là
     //processID của currentThread.
-
+	printf("%s\n", name);
     pcb[freeSlot] = new PCB(freeSlot);
 	int parentID = -1;
 	for (int i = 0; i < this->psize; i++)
@@ -102,7 +102,7 @@ int PTable::ExecUpdate(char* name){
 			}
 		}
 	}
-
+	printf("%s\n", nameParentThread);
 	if (parentID == -1)
 	{
 		printf("No have parent");
@@ -211,4 +211,10 @@ void PTable::Remove(int pid)
 char* PTable::GetFileName(int id)
 {
 	return pcb[id]->GetFileName();
+}
+
+void PTable::SetNameMainProcess(char * name)
+{
+	pcb[0]->SetFileName(name);
+	printf("%s\n", name);
 }

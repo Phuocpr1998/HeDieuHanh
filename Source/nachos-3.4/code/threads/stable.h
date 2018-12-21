@@ -4,8 +4,6 @@
 #include "copyright.h"
 #include "bitmap.h"
 #include "sem.h"
-#include "synch.h"
-#include "system.h"
 #include <string.h>
 
 #define MAX_SEMAPHORE 10
