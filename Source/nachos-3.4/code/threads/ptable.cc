@@ -113,7 +113,6 @@ int PTable::ExecUpdate(char* name){
 
     //Gọi thực thi phương thức Exec của lớp PCB.
 	int pID = pcb[freeSlot]->Exec(name, freeSlot);
-	pcb[freeSlot]->SetFileName(name);
     //Gọi bmsem->V().
 	//Trả về kết quả thực thi của PCB->Exec.
     bmsem->V();

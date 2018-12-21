@@ -88,20 +88,12 @@ ConsoleTest (char *in, char *out)
 void
 StartProcess_2(int id)
 {
-	/*Thread* temp = (Thread*)id;
-	if (temp == NULL) {
-		printf("Cann't file thread");
-		return;
-	}*/
-	printf("StartProcess_2 %s\n", (const char*)"dsfs");
+
 	char* filename = pTab->GetFileName(id);//temp->getName();
-	printf("%s\n", filename);
 	OpenFile *executable = fileSystem->Open(filename);
 	AddrSpace *space;
-	printf("%s\n", filename);
 
 	if (executable == NULL) {
-		printf("%s\n", filename);
 		printf("StartProcess_2 Unable to open file %s\n", filename);
 		return;
 	}

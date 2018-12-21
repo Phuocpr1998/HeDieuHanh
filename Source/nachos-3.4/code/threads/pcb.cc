@@ -33,6 +33,7 @@ PCB::~PCB()
 
 int PCB::Exec(char * filename, int pid)
 {
+	SetFileName(filename);
 	this->id = pid;
 
 	this->multex->P();
