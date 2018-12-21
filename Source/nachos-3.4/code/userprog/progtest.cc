@@ -93,12 +93,14 @@ StartProcess_2(int id)
 		printf("Cann't file thread");
 		return;
 	}
-		
 	char* filename = temp->getName();
+	printf("%s\n", filename);
 	OpenFile *executable = fileSystem->Open(filename);
 	AddrSpace *space;
+	printf("%s\n", filename);
 
 	if (executable == NULL) {
+		printf("%s\n", filename);
 		printf("Unable to open file %s\n", filename);
 		return;
 	}

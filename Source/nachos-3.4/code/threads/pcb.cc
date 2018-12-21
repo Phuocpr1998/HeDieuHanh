@@ -46,7 +46,6 @@ int PCB::Exec(char * filename, int pid)
 	int threadId = (int)execable;
 	execable->setStatus(RUNNING);
 	execable->Fork(StartProcess_2, threadId);
-
 	return this->id;
 }	
 

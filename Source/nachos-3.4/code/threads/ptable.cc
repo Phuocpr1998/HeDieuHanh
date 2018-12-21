@@ -88,7 +88,6 @@ int PTable::ExecUpdate(char* name){
 
     //Nếu có slot trống thì khởi tạo một PCB mới với processID chính là index của slot này, parrentID là
     //processID của currentThread.
-	printf("%s\n", name);
     pcb[freeSlot] = new PCB(freeSlot);
 	int parentID = -1;
 	for (int i = 0; i < this->psize; i++)
@@ -102,7 +101,7 @@ int PTable::ExecUpdate(char* name){
 			}
 		}
 	}
-	printf("%s\n", nameParentThread);
+
 	if (parentID == -1)
 	{
 		printf("No have parent");
