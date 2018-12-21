@@ -47,6 +47,7 @@ PTable::~PTable(){
 }
 
 int PTable::ExecUpdate(char* name){
+	printf("%s\n", name);
 	//Gọi mutex->P(); để giúp tránh tình trạng nạp 2 tiến trình cùng 1 lúc.
 	bmsem->P();
 

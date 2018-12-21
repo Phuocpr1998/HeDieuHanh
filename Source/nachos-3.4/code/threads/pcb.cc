@@ -5,6 +5,9 @@ PCB::PCB()
 {
 	numwait = 0;
 	this->filename = NULL;
+	this->joinsem = new Semaphore("joinsem", 1);
+	this->exitsem = new Semaphore("exitsem", 1);
+	this->multex = new Semaphore("multex", 1);
 }
 
 PCB::PCB(int id)
@@ -12,12 +15,20 @@ PCB::PCB(int id)
 	numwait = 0;
 	this->id = id;
 	this->filename = NULL;
+
+	this->joinsem = new Semaphore("joinsem", 1);
+	this->exitsem = new Semaphore("exitsem", 1);
+	this->multex = new Semaphore("multex", 1);
 }
 
 PCB::~PCB()
 {
 	if (this->filename != NULL)
 		delete[] filename;
+
+	delete joinsem;
+	delete exitsem;
+	delete multex;
 }
 
 int PCB::Exec(char * filename, int pid)
