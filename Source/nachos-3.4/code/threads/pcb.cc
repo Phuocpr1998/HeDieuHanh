@@ -43,9 +43,9 @@ int PCB::Exec(char * filename, int pid)
 		return -1;
 	}
 
-	int threadId = (int)execable;
+	//int threadId = (int)execable;
 	execable->setStatus(RUNNING);
-	execable->Fork(StartProcess_2, threadId);
+	execable->Fork(StartProcess_2, pid); //threadId
 	return this->id;
 }	
 
@@ -111,7 +111,7 @@ void PCB::SetFileName(char * fn)
 	strcpy(filename, fn);
 }
 
-char * PCB::GetFileName()
+char* PCB::GetFileName()
 {
 	return this->filename;
 }

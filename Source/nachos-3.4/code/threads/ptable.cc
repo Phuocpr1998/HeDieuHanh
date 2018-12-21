@@ -113,7 +113,7 @@ int PTable::ExecUpdate(char* name){
 
     //Gọi thực thi phương thức Exec của lớp PCB.
 	int pID = pcb[freeSlot]->Exec(name, freeSlot);
-
+	pcb[freeSlot]->SetFileName(name);
     //Gọi bmsem->V().
 	//Trả về kết quả thực thi của PCB->Exec.
     bmsem->V();
@@ -209,7 +209,9 @@ void PTable::Remove(int pid)
 
 char* PTable::GetFileName(int id)
 {
-	return pcb[id]->GetFileName();
+	char *fileName = pcb[id]->GetFileName();
+	printf("GetFileName %s\n", fileName);
+	return fileName;
 }
 
 void PTable::SetNameMainProcess(char * name)
