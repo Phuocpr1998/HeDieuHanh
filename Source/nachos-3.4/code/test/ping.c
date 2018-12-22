@@ -10,5 +10,5 @@ int main()
 		Write("A", 1, ConsoleInput);
 	}
 
-	Exit(0);
+	//Exit(0);
 }
