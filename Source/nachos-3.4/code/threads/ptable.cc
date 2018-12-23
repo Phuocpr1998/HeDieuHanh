@@ -121,7 +121,7 @@ int PTable::ExecUpdate(char* name){
 }
 
 int PTable::ExitUpdate(int ec){	
-	printf("Exit %d\n", ec);
+	//printf("Exit %d\n", ec);
 	char * nameThread = currentThread->getName();
 	int pid = -1;
 	for (int i = 0; i < this->psize; i++)
@@ -181,7 +181,7 @@ int PTable::JoinUpdate(int id){
 
 	//kt xem phai la parent cua tien trinh co parrentID = id hay khong
 	if(parrentID != pcb[id]->parentID){
-		printf("khong phai la tien trinh cha cua %d",id);
+		printf("Khong phai la tien trinh cha cua %d",id);
 		return -1;
 	}
 
@@ -189,7 +189,7 @@ int PTable::JoinUpdate(int id){
 	pcb[parrentID]->IncNumWait();
 	pcb[parrentID]->JoinWait();
 
-	printf("OK Release\n");
+	//printf("OK Release\n");
 	//Xử lý exitcode.
 	int ec = pcb[id]->GetExitCode();
 	//Sau khi tiến trình con thực hiện xong, tiến trình đã được giải phóng,ExitRelease() để cho phép tiến trình con thoát.
