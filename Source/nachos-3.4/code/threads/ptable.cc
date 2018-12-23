@@ -121,6 +121,7 @@ int PTable::ExecUpdate(char* name){
 }
 
 int PTable::ExitUpdate(int ec){	
+	printf("Exit %d\n", ec);
 	char * nameThread = currentThread->getName();
 	int pid = -1;
 	for (int i = 0; i < this->psize; i++)

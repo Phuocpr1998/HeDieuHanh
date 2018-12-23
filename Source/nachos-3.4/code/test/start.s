@@ -112,6 +112,14 @@ Exit:
 	j	$31
 	.end Exit
 
+	.globl ExitThread
+	.ent	ExitThread
+ExitThread:
+	addiu $2,$0,SC_ExitThread
+	syscall
+	j	$31
+	.end ExitThread
+
 	.globl Exec
 	.ent	Exec
 Exec:

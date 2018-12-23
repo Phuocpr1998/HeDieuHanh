@@ -114,7 +114,7 @@ StartProcess_2(int id)
 	space->RestoreState();      // load page table register
 
 	machine->Run();         // jump to the user progam
-	ASSERT(FALSE);          // machine->Run never returns;
+	//ASSERT(FALSE);          // machine->Run never returns;
 					// the address space exits
 					// by doing the syscall "exit"
 }

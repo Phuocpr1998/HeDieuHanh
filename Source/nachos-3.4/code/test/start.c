@@ -103,7 +103,6 @@ Seek:
 	.end Seek
 
 
-
 	.globl Join
 	.ent Join
 Join:
@@ -121,6 +120,14 @@ Exit:
 	syscall
 	j	$31
 	.end Exit
+
+	.globl ExitThread
+	.ent	ExitThread
+ExitThread:
+	addiu $2,$0,SC_ExitThread
+	syscall
+	j	$31
+	.end ExitThread
 
 	.globl Up
 	.ent	Up

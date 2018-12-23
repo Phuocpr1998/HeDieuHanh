@@ -111,7 +111,7 @@ ExceptionHandler(ExceptionType which)
 		case SC_Join:
 			join();
 			break;
-		case SC_Exit:
+		case SC_ExitThread:
 			exit();
 			break;
 		case SC_Up:

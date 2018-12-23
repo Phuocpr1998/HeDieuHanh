@@ -10,5 +10,6 @@ int main()
 		Write("A", 1, ConsoleInput);
 	}
 
-	//Exit(0);
+	ExitThread(0);
+	return 1;
 }
