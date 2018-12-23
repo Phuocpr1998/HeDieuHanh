@@ -111,7 +111,7 @@ ExceptionHandler(ExceptionType which)
 		case SC_Join:
 			join();
 			break;
-		case SC_ExitThread:
+		case SC_Exit:
 			exit();
 			break;
 		case SC_Up:
@@ -124,8 +124,6 @@ ExceptionHandler(ExceptionType which)
 			createSemaphore();
 			break;
 		default:
-			/*DEBUG('d', "Shutdown, don't have type in systemcall.\n");
-			interrupt->Halt();*/
 			break;
 		}
 		// tăng program counter
@@ -167,7 +165,6 @@ ExceptionHandler(ExceptionType which)
 		ASSERT(FALSE);
 		break;
 	}
-
 }  
 
 //Ham copy vung data tu user space sang kernel space
@@ -537,7 +534,6 @@ void join(){
 
 	machine->WriteRegister(2,ec);
 }
-
 
 void exit(){
 	int exitStatus,ec ;

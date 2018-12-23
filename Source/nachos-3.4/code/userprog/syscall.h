@@ -32,7 +32,6 @@
 #define SC_Up		12
 #define SC_Down     13
 #define SC_CreateSemaphore 14
-#define SC_ExitThread		15
 
 #ifndef IN_ASM
 
@@ -54,8 +53,6 @@ void Halt();
 
 /* This user program is done (status = 0 means exited normally). */
 void Exit(int status);
-
-void ExitThread(int status);
 
 /* A unique identifier for an executing user program (address space) */
 typedef int SpaceId;	
