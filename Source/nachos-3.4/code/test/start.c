@@ -145,6 +145,14 @@ CreateSemaphore:
 	j	$31
 	.end CreateSemaphore
 
+	.globl StrCmp
+	.ent StrCmp
+StrCmp:
+	addiu $2, $0, SC_StrCmp
+	syscall
+	j $31
+	.end StrCmp
+
 	.globl Exec
 	.ent	Exec
 Exec:

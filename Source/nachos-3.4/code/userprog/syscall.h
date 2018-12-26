@@ -32,6 +32,7 @@
 #define SC_Up		12
 #define SC_Down     13
 #define SC_CreateSemaphore 14
+#define SC_StrCmp 15
 
 #ifndef IN_ASM
 
@@ -118,6 +119,8 @@ int Write(char *buffer, int charcount, OpenFileId id);
 int Read(char *buffer, int charcount, OpenFileId id);
 
 int Seek(int pos, OpenFileId id);
+
+int StrCmp(char* str1, char* str2);
 
 
 ///////////////////////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@
 #include "system.h"
 #include "syscall.h"
 #include "openfile.h"
+#include <strings.h>
 
 #define MAXBUFFER 1024
 
@@ -42,6 +43,7 @@ void exit();
 void up();
 void down();
 void createSemaphore();
+void strcmp();
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
 char * User2System(int virtAddr, int limit);
@@ -122,6 +124,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_CreateSemaphore:
 			createSemaphore();
+			break;
+		case SC_StrCmp:
+			strcmp();
 			break;
 		default:
 			break;
@@ -585,4 +590,24 @@ void createSemaphore(){
 		printf("Out of bitmap!\n");
 	}
 	machine->WriteRegister(2,result);
+}
+
+void strcmp(){
+	char* str1;
+	char* str2;
+	int virtAddr1, virtAddr2;
+	int result;
+
+	virtAddr1 = machine->ReadRegister(4);
+	virtAddr2 = machine->ReadRegister(5);
+
+	str1 = User2System(virtAddr1, MaxFileLength + 1);
+	str2 = User2System(virtAddr2, MaxFileLength + 1);
+
+	if(str1 == NULL || str2 == NULL){
+		machine->WriteRegister(2, -1);
+	}else{
+		result = strcmp(str1, str2);
+		machine->WriteRegister(2, result);
+	}
 }

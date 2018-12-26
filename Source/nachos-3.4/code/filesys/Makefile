@@ -333,7 +333,7 @@ exception.o: ../userprog/exception.cc ../threads/copyright.h \
  ../threads/ptable.h ../userprog/bitmap.h ../filesys/openfile.h \
  ../threads/pcb.h ../threads/synch.h ../threads/stable.h ../threads/sem.h \
  ../filesys/synchdisk.h ../machine/disk.h ../threads/synch.h \
- ../userprog/syscall.h
+ ../userprog/syscall.h /usr/include/strings.h
 progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  ../threads/system.h ../threads/copyright.h ../threads/utility.h \
  ../threads/bool.h ../machine/sysdep.h /usr/include/stdio.h \

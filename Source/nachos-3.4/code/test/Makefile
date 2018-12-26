@@ -35,7 +35,7 @@ CPP = gcc -E
 INCDIR =-I../userprog -I../threads
 CFLAGS = -G 0 -c $(INCDIR)
 
-all: halt shell matmult sort createfile copy echo cat ping pong testExec
+all: halt shell matmult sort createfile copy echo cat ping pong testExec testShell
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.c > strt.s
@@ -107,3 +107,9 @@ testExec.o: testExec.c
 testExec: testExec.o start.o
 	$(LD) $(LDFLAGS) start.o testExec.o -o testExec.coff
 	../bin/coff2noff testExec.coff testExec
+
+testShell.o: testShell.c
+	$(CC) $(CFLAGS) -c testShell.c
+testShell: testShell.o start.o
+	$(LD) $(LDFLAGS) start.o testShell.o -o testShell.coff
+	../bin/coff2noff testShell.coff testShell
