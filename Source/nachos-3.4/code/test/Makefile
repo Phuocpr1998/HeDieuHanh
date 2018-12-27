@@ -35,7 +35,11 @@ CPP = gcc -E
 INCDIR =-I../userprog -I../threads
 CFLAGS = -G 0 -c $(INCDIR)
 
+<<<<<<< HEAD
 all: halt shell matmult sort createfile copy echo cat ping pong testExec testShell produce consume testProduceConsume
+=======
+all: halt shell matmult sort createfile copy echo cat ping pong testExec testShell procedure consume testProduceConsume
+>>>>>>> 73c0a8c431356b41bb7e1043b773b63d6e474c4b
 
 start.o: start.s ../userprog/syscall.h
 	$(CPP) $(CPPFLAGS) start.c > strt.s
