@@ -113,3 +113,24 @@ testShell.o: testShell.c
 testShell: testShell.o start.o
 	$(LD) $(LDFLAGS) start.o testShell.o -o testShell.coff
 	../bin/coff2noff testShell.coff testShell
+	
+	
+	
+	
+produce.o: produce.c
+	$(CC) $(CFLAGS) -c produce.c
+produce: produce.o start.o
+	$(LD) $(LDFLAGS) start.o produce.o -o produce.coff
+	../bin/coff2noff produce.coff produce
+
+consume.o: consume.c
+	$(CC) $(CFLAGS) -c consume.c
+consume: consume.o start.o
+	$(LD) $(LDFLAGS) start.o consume.o -o consume.coff
+	../bin/coff2noff consume.coff consume
+
+testProduceConsume.o: testProduceConsume.c
+	$(CC) $(CFLAGS) -c testProduceConsume.c
+testProduceConsume: testProduceConsume.o start.o
+	$(LD) $(LDFLAGS) start.o testProduceConsume.o -o testProduceConsume.coff
+	../bin/coff2noff testProduceConsume.coff testProduceConsume
