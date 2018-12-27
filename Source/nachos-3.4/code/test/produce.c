@@ -3,7 +3,8 @@
 #define MAXLEN 32
 int main()
 {
-	for (int i = 0; i < 10; i++) {
+	int i = 0;
+	for (; i < 10; i++) {
 		Down("max");
 		Down("uniqueproduce");
 		printf("%s\n", (const char)"produce");
