@@ -8,12 +8,13 @@ int main()
 {
 	char command[MAXLEN];
 	OpenFileId file; 
-	int threadId;
+	int threadId, byteReaded;
+	int i = 0;
 	do
 	{
 		Write("~: ",4, ConsoleInput);
-
-		if(Read(command, MAXLEN, ConsoleOutput) == -1){
+		byteReaded = Read(command, MAXLEN, ConsoleOutput);
+		if(byteReaded == -1){
 			Write("Error!\n", 8, ConsoleInput);
 		}
 		else{
@@ -33,7 +34,13 @@ int main()
 
 					Write("\n",1 , ConsoleInput);
 				}
+				for (; i < byteReaded; ++i)
+				{
+					command[i] = 0;
+				}
 			}
+
 		}
+
 	}while(1);
 }
