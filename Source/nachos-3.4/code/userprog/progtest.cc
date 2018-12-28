@@ -105,8 +105,10 @@ StartProcess_2(int id)
 		return;
 	}
 	space = new AddrSpace(executable);
-	thread->space = space;
-	currentThread = thread;
+	currentThread->space = space;
+	char *name = new char[strlen(filename) + 1];
+	strcpy(name, filename);
+	currentThread->setName(name);
 
 	delete executable;          // close file
 

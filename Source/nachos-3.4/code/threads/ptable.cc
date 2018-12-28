@@ -158,6 +158,7 @@ int PTable::ExitUpdate(int ec){
 
     this->Remove(pid);
 	currentThread->Finish();
+	
 	return ec;
 }
 
