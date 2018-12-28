@@ -7,7 +7,7 @@
 
 class Sem{
 private:
-	char name[50];
+	char *name;
 	Semaphore *sem; // Tạo Semaphore để quản lý
 public:
 // khởi tạo đối tượng Sem. Gán giá trị ban đầu là null
