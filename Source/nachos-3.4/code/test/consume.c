@@ -3,6 +3,11 @@
 #define MAXLEN 32
 int main()
 {
+	int uniqueconsume;
+	uniqueconsume = CreateSemaphore("uniqueconsume", 1);
+	if (uniqueconsume < 0) {
+		return -1;
+	}
 	int i = 0;
 	for (; i < 10; i++) {
 		Down("produce2consume");

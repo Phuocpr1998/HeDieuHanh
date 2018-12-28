@@ -3,6 +3,12 @@
 #define MAXLEN 32
 int main()
 {
+	int max, uniqueproduce;
+	max = CreateSemaphore("max", 3);
+	uniqueproduce = CreateSemaphore("uniqueproduce", 1);
+	if (max < 0 || uniqueproduce < 0) {
+		return -1;
+	}
 	int i = 0;
 	for (; i < 10; i++) {
 		Down("max");

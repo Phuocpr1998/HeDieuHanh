@@ -178,8 +178,9 @@ char * User2System(int virtAddr, int limit)
 {
 	int oneChar;
 	char * kernelBuf = new char[limit + 1];
-	if (kernelBuf == NULL)
+	if (kernelBuf == NULL) {
 		return NULL;
+	}
 	memset(kernelBuf, 0, limit + 1);
 	//doc vaf copy du lieu tai dia chi virtAddr sang kernelBuff
 	for (int i = 0; i < limit; i++)
@@ -518,7 +519,9 @@ void exec(){
 
 	//Lay ten file
 	virtAddr = machine->ReadRegister(4);
+	printf("virtAddr of file name %d\n", virtAddr);
 	progName = User2System(virtAddr, MaxFileLength +1);
+	printf("name of file name %s\n", progName);
 	if (progName == NULL)
 	{
 		machine->WriteRegister(2, -1);
@@ -560,6 +563,7 @@ void up() {
 
 	//return result
 	machine->WriteRegister(2, result);
+	delete[]semName;
 }
 
 void down() {
@@ -572,6 +576,7 @@ void down() {
 
 	//return result
 	machine->WriteRegister(2, result);
+	delete[]semName;
 }
 
 void createSemaphore(){
@@ -579,9 +584,10 @@ void createSemaphore(){
 	int virtAddr, semval;
 	int result;
 	virtAddr = machine->ReadRegister(4);
+	printf("virtAddr of semaphore %d\n", virtAddr);
 	semval = machine->ReadRegister(5);
 	name = User2System(virtAddr, MaxFileLength + 1);
-
+	printf("name of semaphore %s\n", name);
 	result = semTab->Create(name, semval);
 	if(result == -1){
 		printf("Already exist!\n");
@@ -590,6 +596,7 @@ void createSemaphore(){
 		printf("Out of bitmap!\n");
 	}
 	machine->WriteRegister(2,result);
+	delete[]name;
 }
 
 void strcmp(){
@@ -610,4 +617,6 @@ void strcmp(){
 		result = strcmp(str1, str2);
 		machine->WriteRegister(2, result);
 	}
+	delete[]str1;
+	delete[]str2;
 }
