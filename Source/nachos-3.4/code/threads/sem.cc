@@ -1,10 +1,14 @@
 #include "sem.h"
 Sem::Sem(char* na, int i){
-	strcpy(this->name,na);
-	sem = new Semaphore(name,i);
+	this->name = new char[strlen(na) + 1];
+	strcpy(this->name, na);
+	sem = new Semaphore(this->name,i);
 }
+
 Sem::~Sem(){
 	delete sem;
+	if (name != NULL)
+		delete name;
 }
 void Sem::wait(){ 
 	sem->P(); 

@@ -519,6 +519,7 @@ void exec(){
 	//Lay ten file
 	virtAddr = machine->ReadRegister(4);
 	progName = User2System(virtAddr, MaxFileLength +1);
+	printf("%s\n", progName);
 	if (progName == NULL)
 	{
 		machine->WriteRegister(2, -1);
@@ -581,7 +582,7 @@ void createSemaphore(){
 	virtAddr = machine->ReadRegister(4);
 	semval = machine->ReadRegister(5);
 	name = User2System(virtAddr, MaxFileLength + 1);
-
+	printf("%s\n", name);
 	result = semTab->Create(name, semval);
 	if(result == -1){
 		printf("Already exist!\n");
