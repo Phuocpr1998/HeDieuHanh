@@ -66,7 +66,6 @@ Thread::~Thread()
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
 #ifdef USER_PROGRAM
 	delete fileManage;
-	delete space;
 #endif
 }
 

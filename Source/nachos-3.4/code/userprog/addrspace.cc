@@ -232,3 +232,13 @@ void AddrSpace::RestoreState()
 	machine->pageTable = pageTable;
 	machine->pageTableSize = numPages;
 }
+
+void AddrSpace::CleanUp()
+{
+	int *temp;
+	temp = arr;
+	while (temp) {
+		AddrSpace::pageTableManage.Free(temp[0]);
+		temp++;
+	}
+}

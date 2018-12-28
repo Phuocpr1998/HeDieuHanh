@@ -560,6 +560,7 @@ void up() {
 
 	//return result
 	machine->WriteRegister(2, result);
+	delete[] semName;
 }
 
 void down() {
@@ -572,6 +573,7 @@ void down() {
 
 	//return result
 	machine->WriteRegister(2, result);
+	delete[] semName;
 }
 
 void createSemaphore(){
@@ -581,7 +583,6 @@ void createSemaphore(){
 	virtAddr = machine->ReadRegister(4);
 	semval = machine->ReadRegister(5);
 	name = User2System(virtAddr, MaxFileLength + 1);
-	printf("%s\n", name);
 	result = semTab->Create(name, semval);
 	if(result == -1){
 		printf("Already exist!\n");
@@ -590,6 +591,7 @@ void createSemaphore(){
 		printf("Out of bitmap!\n");
 	}
 	machine->WriteRegister(2,result);
+	delete[] name;
 }
 
 void strcmp(){
@@ -610,4 +612,7 @@ void strcmp(){
 		result = strcmp(str1, str2);
 		machine->WriteRegister(2, result);
 	}
+
+	delete[] str1;
+	delete[] str2;
 }

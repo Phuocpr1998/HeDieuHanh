@@ -158,7 +158,6 @@ int PTable::ExitUpdate(int ec){
 
     this->Remove(pid);
 	currentThread->Finish();
-	
 	return ec;
 }
 
@@ -190,7 +189,6 @@ int PTable::JoinUpdate(int id){
 	pcb[parrentID]->IncNumWait();
 	pcb[parrentID]->JoinWait();
 
-	//printf("OK Release\n");
 	//Xử lý exitcode.
 	int ec = pcb[id]->GetExitCode();
 	//Sau khi tiến trình con thực hiện xong, tiến trình đã được giải phóng,ExitRelease() để cho phép tiến trình con thoát.

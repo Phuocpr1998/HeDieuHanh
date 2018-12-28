@@ -21,7 +21,9 @@
 #include "copyright.h"
 #include "scheduler.h"
 #include "system.h"
-
+#ifdef USER_PROGRAM
+#include "addrspace.h"
+#endif
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
 // 	Initialize the list of ready but not running threads to empty.
@@ -121,18 +123,23 @@ Scheduler::Run (Thread *nextThread)
     // we need to delete its carcass.  Note we cannot delete the thread
     // before now (for example, in Thread::Finish()), because up to this
     // point, we were still running on the old thread's stack!
+#ifdef USER_PROGRAM
+	AddrSpace *spaceTmp = NULL;
+#endif
     if (threadToBeDestroyed != NULL) {
 #ifdef USER_PROGRAM
-		delete threadToBeDestroyed->space;
+		spaceTmp = threadToBeDestroyed->space;
 #endif
         delete threadToBeDestroyed;
-	threadToBeDestroyed = NULL;
+		threadToBeDestroyed = NULL;
     }
     
 #ifdef USER_PROGRAM
     if (currentThread->space != NULL) {		// if there is an address space
         currentThread->RestoreUserState();     // to restore, do it.
-	currentThread->space->RestoreState();
+		currentThread->space->RestoreState();
+		/*if (spaceTmp != NULL)
+			delete spaceTmp;*/
     }
 #endif
 }
