@@ -155,7 +155,7 @@ AddrSpace::AddrSpace(OpenFile *executable)
 		}
 		//thêm phần còn lại của page cuối vào mainMemory
 		executable->ReadAt(&(machine->mainMemory[arr[i] * PageSize]),
-			(noffH.code.size + noffH.initData.size) - (i * PageSize), noffH.code.inFileAddr + temp + j * PageSize);
+			(noffH.code.size + noffH.initData.size) - (i * PageSize), noffH.initData.inFileAddr + temp + j * PageSize);
 	}
 }
 

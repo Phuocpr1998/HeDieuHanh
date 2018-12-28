@@ -519,7 +519,6 @@ void exec(){
 	//Lay ten file
 	virtAddr = machine->ReadRegister(4);
 	progName = User2System(virtAddr, MaxFileLength +1);
-	printf("%s\n", progName);
 	if (progName == NULL)
 	{
 		machine->WriteRegister(2, -1);
