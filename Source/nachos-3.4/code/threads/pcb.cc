@@ -31,8 +31,6 @@ PCB::~PCB()
 	delete joinsem;
 	delete exitsem;
 	delete multex;
-	/*if (thread != NULL)
-		delete thread;*/
 }
 
 int PCB::Exec(char * filename, int pid)

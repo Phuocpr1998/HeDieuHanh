@@ -66,6 +66,7 @@ Thread::~Thread()
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
 #ifdef USER_PROGRAM
 	delete fileManage;
+	delete space;
 #endif
 }
 
@@ -288,6 +289,11 @@ Thread::StackAllocate (VoidFunctionPtr func, int arg)
     machineState[WhenDonePCState] = (int) ThreadFinish;
 }
 
+void Thread::setName(char * name)
+{
+	this->name = name;
+}
+
 #ifdef USER_PROGRAM
 #include "machine.h"
 
@@ -323,3 +329,4 @@ Thread::RestoreUserState()
 	machine->WriteRegister(i, userRegisters[i]);
 }
 #endif
+
