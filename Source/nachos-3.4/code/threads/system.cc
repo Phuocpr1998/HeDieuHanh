@@ -32,6 +32,7 @@ Machine* machine;	// user program memory and registers
 SynchConsole* gSynchConsole;
 PTable* pTab;
 STable* semTab;
+Semaphore *unique;
 Semaphore *semAddrSpace;
 #endif
 
@@ -157,6 +158,7 @@ Initialize(int argc, char **argv)
 	semTab = new STable();
     gSynchConsole = new SynchConsole();
 	semAddrSpace = new Semaphore("semaddrspace", 1);
+	unique = new Semaphore("uniqueproduct", 1);
 #endif
 
 #ifdef FILESYS
@@ -189,6 +191,7 @@ Cleanup()
 	delete gSynchConsole;
 	delete pTab;
 	delete semTab;
+	delete unique;
 	delete semAddrSpace;
 #endif
 

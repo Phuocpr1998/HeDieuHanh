@@ -11,7 +11,7 @@ int main()
 	for (; i < 10; i++) {
 		Down("produce2consume");
 		Down("uniqueconsume");
-		Write("=================consume\n",27, ConsoleInput);
+		printf("CONSUME: san pham con trong kho la %d\n", consume());
 		Up("uniqueconsume");
 		Up("max");
 	}

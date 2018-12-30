@@ -136,6 +136,22 @@ Down:
 	j	$31
 	.end Down
 
+	.globl produce
+	.ent	produce
+produce:
+	addiu $2, $0, SC_Produce
+	syscall
+	j	$31
+	.end produce
+
+	.globl consume
+	.ent	consume
+consume:
+	addiu $2, $0, SC_Consume
+	syscall
+	j	$31
+	.end consume
+
 	.globl CreateSemaphore
 	.ent	CreateSemaphore
 CreateSemaphore:

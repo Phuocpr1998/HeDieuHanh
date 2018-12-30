@@ -33,6 +33,8 @@
 #define SC_Down     13
 #define SC_CreateSemaphore 14
 #define SC_StrCmp 15
+#define SC_Produce 16
+#define SC_Consume 17
 
 #ifndef IN_ASM
 
@@ -74,6 +76,10 @@ int Join(SpaceId id);
 int Up(char* name);
 
 int Down(char* name);
+
+int produce();
+
+int consume();
 
 int CreateSemaphore(char* name, int semval);
  

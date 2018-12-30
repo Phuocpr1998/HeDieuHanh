@@ -12,7 +12,7 @@ int main()
 	for (; i < 10; i++) {
 		Down("max");
 		Down("uniqueproduce");
-		Write("produce\n", 9, ConsoleInput);
+		printf("PRODUCE: san pham trong kho la %d\n", produce());
 		Up("uniqueproduce");
 		Up("produce2consume");
 	}
