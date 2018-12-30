@@ -3,11 +3,11 @@
 #define MAXLEN 32
 int main()
 {
-	int i = 0;
+	int i = 1;
 	
-	for (; i < 30; i++) {
+	for (; i <= 30; i++) {
 		Down("uniqueproduce");
-		printf("PRODUCE: san pham thu %d\n", i + 1);
+		Write("PRODUCE: Tao 1 san pham\n", 25, ConsoleInput);
 		Up("uniqueproduce");
 		Up("product_of_box");
 	}

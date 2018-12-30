@@ -43,8 +43,6 @@ void join();
 void exit();
 void up();
 void down();
-void produceSyscall();
-void consumeSyscall();
 void createSemaphore();
 void strcmp();
 //Ham copy vung data tu user space sang kernel space
@@ -134,6 +132,7 @@ ExceptionHandler(ExceptionType which)
 		case SC_StrCmp:
 			strcmp();
 			break;
+
 		default:
 			break;
 		}

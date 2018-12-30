@@ -151,10 +151,10 @@ StrCmp:
 	syscall
 	j $31
 	.end StrCmp
-	
+
+
 	.globl Join
 	.ent Join
-
 Join:
 	addiu $2, $0, SC_Join
 	syscall

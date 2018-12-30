@@ -316,7 +316,7 @@ exception.o: ../userprog/exception.cc ../threads/copyright.h \
  ../machine/timer.h ../threads/synchcons.h ../machine/console.h \
  ../threads/ptable.h ../userprog/bitmap.h ../filesys/openfile.h \
  ../threads/pcb.h ../threads/synch.h ../threads/stable.h ../threads/sem.h \
- ../userprog/syscall.h /usr/include/strings.h
+ ../userprog/syscall.h ../threads/synch.h /usr/include/strings.h
 progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  ../threads/system.h ../threads/copyright.h ../threads/utility.h \
  ../threads/bool.h ../machine/sysdep.h /usr/include/stdio.h \

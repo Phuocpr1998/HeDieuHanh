@@ -3,14 +3,14 @@
 #define MAXLEN 32
 int main()
 {
-	int i = 0;
+	int i = 1;
 	
-	for (; i < 10; i++) {
+	for (; i <= 10; i++) {
 		Down("product_of_box");
 		Down("product_of_box");
 		Down("product_of_box");
 		Down("uniqueconsume");
-		printf("ENCAPSULATE: dong goi thung hang thu %d\n", i + 1);
+		Write("ENCAPSULATE: dong goi 1 thung hang\n", 36, ConsoleInput);
 		Up("uniqueconsume");
 	}
 	return 0;

@@ -77,7 +77,6 @@ int Down(char* name);
 
 int CreateSemaphore(char* name, int semval);
  
-
 /* File system operations: Create, Open, Read, Write, Close
  * These functions are patterned after UNIX -- files represent
  * both files *and* hardware I/O devices.
