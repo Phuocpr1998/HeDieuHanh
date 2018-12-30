@@ -3,17 +3,15 @@
 #define MAXLEN 32
 int main()
 {
-	int i = 0, uniqueconsume = -1;
-	uniqueconsume = CreateSemaphore("uniqueconsume", 1);
-	if (uniqueconsume < 0)
-		return -1;
-
+	int i = 0;
+	
 	for (; i < 10; i++) {
-		Down("produce2consume");
+		Down("product_of_box");
+		Down("product_of_box");
+		Down("product_of_box");
 		Down("uniqueconsume");
-		printf("CONSUME: san pham con trong kho la %d\n", consume());
+		printf("ENCAPSULATE: dong goi thung hang thu %d\n", i + 1);
 		Up("uniqueconsume");
-		Up("max");
 	}
 	return 0;
 }

@@ -40,7 +40,6 @@ extern Machine* machine;	// user program memory and registers
 extern SynchConsole* gSynchConsole; // work with console
 extern PTable* pTab;
 extern STable* semTab;
-extern Semaphore *unique;
 extern Semaphore *semAddrSpace;
 #endif
 

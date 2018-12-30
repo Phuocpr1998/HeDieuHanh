@@ -54,7 +54,6 @@ char * User2System(int virtAddr, int limit);
 // Tra ve so byte da copy
 int System2User(int virtAddr, int len, char *buffer);
 
-int product = 0;
 
 
 
@@ -128,12 +127,6 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_Down:
 			down();
-			break;
-		case SC_Produce:
-			produceSyscall();
-			break;
-		case SC_Consume:
-			consumeSyscall();
 			break;
 		case SC_CreateSemaphore:
 			createSemaphore();
@@ -628,19 +621,4 @@ void strcmp(){
 
 	delete[] str1;
 	delete[] str2;
-}
-
-
-void produceSyscall() {
-	unique->P();
-	product++;
-	machine->WriteRegister(2, product);
-	unique->V();
-}
-
-void consumeSyscall() {
-	unique->P();
-	product--;
-	machine->WriteRegister(2, product);
-	unique->V();
 }

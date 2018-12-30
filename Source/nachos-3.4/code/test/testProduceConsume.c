@@ -3,10 +3,11 @@
 
 int main() {
 
-	int produce2consume = -1, produceID = 0, consumeID = 0;
-	produce2consume = CreateSemaphore("produce2consume", 0);
-	
-	if (produce2consume < 0) {
+	int uniqueproduce = -1, uniqueconsume = -1, max = -1, produceID = 0, consumeID = 0;
+	max = CreateSemaphore("product_of_box", 0);
+	uniqueproduce = CreateSemaphore("uniqueproduce", 1);
+	uniqueconsume = CreateSemaphore("uniqueconsume", 1);
+	if (uniqueproduce < 0 || uniqueconsume < 0 || max < 0) {
 		return -1;
 	}
 

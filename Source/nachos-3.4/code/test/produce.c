@@ -3,18 +3,13 @@
 #define MAXLEN 32
 int main()
 {
-	int i = 0, max = -1, uniqueproduce = -1;
-	max = CreateSemaphore("max", 3);
-	uniqueproduce = CreateSemaphore("uniqueproduce", 1);
-	if(max < 0 || uniqueproduce < 0)
-		return -1;
-
-	for (; i < 10; i++) {
-		Down("max");
+	int i = 0;
+	
+	for (; i < 30; i++) {
 		Down("uniqueproduce");
-		printf("PRODUCE: san pham trong kho la %d\n", produce());
+		printf("PRODUCE: san pham thu %d\n", i + 1);
 		Up("uniqueproduce");
-		Up("produce2consume");
+		Up("product_of_box");
 	}
 	return 0;
 }
