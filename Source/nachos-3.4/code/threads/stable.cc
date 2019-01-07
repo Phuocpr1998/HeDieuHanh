@@ -51,7 +51,6 @@ int STable::Delete(char *name) {
 		if (semTab[i] != NULL && (strcmp(name, semTab[i]->GetName()) == 0)) {
 			delete semTab[i];
 			bm->Clear(i);
-			printf("delete semaphore %s\n", name);
 			return 1;
 		}
 	}
