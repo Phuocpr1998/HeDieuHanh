@@ -23,7 +23,6 @@ STable::~STable() {
 int STable::Create(char* name, int init) {
 	for (int i = 0; i < MAX_SEMAPHORE; i++) {
 		if (semTab[i] != NULL && (strcmp(name, semTab[i]->GetName()) == 0)) {
-			printf("semaphore already %s\n", name);
 			return -1; //already exists
 		}
 	}
@@ -33,7 +32,6 @@ int STable::Create(char* name, int init) {
 	}
 	
 	semTab[index] = new Sem(name, init);
-	printf("create semaphore %s\n", name);
 	bm->Mark(index);
 	return index;
 }
