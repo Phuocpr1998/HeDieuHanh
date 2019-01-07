@@ -22,6 +22,7 @@ public:
 	int Wait(char* name); // Nếu tồn tại Semaphore “name” thì gọi this->P() để thực thi. Ngược lại, báo lỗi.
 	int Signal(char* name); // Nếu tồn tại Semaphore “name” thì gọi this->V()để thực thi. Ngược lại, báo lỗi.
 	int FindFreeSlot(int id); // Tìm slot trống.
+	int Delete(char *name);
 };
 
 #endif

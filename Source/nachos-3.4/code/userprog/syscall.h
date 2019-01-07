@@ -33,6 +33,7 @@
 #define SC_Down     13
 #define SC_CreateSemaphore 14
 #define SC_StrCmp 15
+#define SC_DeleteSemaphore 16
 
 #ifndef IN_ASM
 
@@ -76,6 +77,8 @@ int Up(char* name);
 int Down(char* name);
 
 int CreateSemaphore(char* name, int semval);
+
+int DeleteSemaphore(char *name);
  
 /* File system operations: Create, Open, Read, Write, Close
  * These functions are patterned after UNIX -- files represent

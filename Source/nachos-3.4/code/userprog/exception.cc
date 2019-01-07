@@ -44,6 +44,7 @@ void exit();
 void up();
 void down();
 void createSemaphore();
+void deleteSemaphore();
 void strcmp();
 //Ham copy vung data tu user space sang kernel space
 //Tra ve con tro tro den vung data da dc chuyen sang kernel space
@@ -128,6 +129,9 @@ ExceptionHandler(ExceptionType which)
 			break;
 		case SC_CreateSemaphore:
 			createSemaphore();
+			break;
+		case SC_DeleteSemaphore:
+			deleteSemaphore();
 			break;
 		case SC_StrCmp:
 			strcmp();
@@ -620,4 +624,24 @@ void strcmp(){
 
 	delete[] str1;
 	delete[] str2;
+}
+
+
+
+void deleteSemaphore() {
+	char* name;
+	int virtAddr;
+	int result;
+	virtAddr = machine->ReadRegister(4);
+	name = User2System(virtAddr, MaxFileLength + 1);
+	result = semTab->Delete(name);
+	if (result == -1) {
+		printf("Semaphore not exist!\n");
+	}
+	else if (result == -2) {
+		printf("Out of bitmap!\n");
+	}
+	machine->WriteRegister(2, result);
+	delete[] name;
+
 }

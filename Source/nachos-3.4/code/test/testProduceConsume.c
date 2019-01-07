@@ -18,6 +18,9 @@ int main() {
 		Join(consumeID);
 		Join(produceID);
 	}
+	DeleteSemaphore("product_of_box");
+	DeleteSemaphore("uniqueproduce");
+	DeleteSemaphore("uniqueconsume");
 	return 0;
 	
 }

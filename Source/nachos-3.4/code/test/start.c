@@ -145,6 +145,16 @@ CreateSemaphore:
 	j	$31
 	.end CreateSemaphore
 
+
+	.globl DeleteSemaphore
+	.ent	DeleteSemaphore
+DeleteSemaphore :
+	addiu $2, $0, SC_DeleteSemaphore
+	syscall
+	j	$31
+	.end DeleteSemaphore
+
+
 	.globl StrCmp
 	.ent StrCmp
 StrCmp:
