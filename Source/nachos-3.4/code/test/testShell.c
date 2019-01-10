@@ -1,12 +1,12 @@
 #include "syscall.h"
 #include "copyright.h"
 
-#define MAXLEN 100
+#define MAXLEN 32
 
 
 int main()
 {
-	char command[MAXLEN];
+	char command[MAXLEN + 1];
 	OpenFileId file; 
 	int threadId, byteReaded;
 	int i = 0;
@@ -23,7 +23,7 @@ int main()
 			}
 			else{
 				file = Open(command,ReadOnly);
-				if(file <= 0){
+				if(file < 0){
 					Write("Ten file loi\n",15, ConsoleInput);
 				}
 				else{
@@ -34,10 +34,12 @@ int main()
 
 					Write("\n",1 , ConsoleInput);
 				}
-				for (; i < byteReaded; ++i)
+				command[0] = '\0';
+
+				/*for (; i < byteReaded; ++i)
 				{
 					command[i] = 0;
-				}
+				}*/
 			}
 
 		}

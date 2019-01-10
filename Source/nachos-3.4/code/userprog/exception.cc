@@ -231,7 +231,6 @@ void openFile() {
 	virtAddr = machine->ReadRegister(4);
 	DEBUG('a', "\nReading filename.");
 	fileName = User2System(virtAddr, MaxFileLength + 1);
-	
 
 	if (fileName == NULL) {
 		printf("\nNot enough memory in system");
@@ -249,7 +248,6 @@ void openFile() {
 
 	// tìm vị trí trống
 	int id = currentThread->fileManage->FindFreeSlot();
-
 	if (id != -1) // còn vị trí trông
 	{
 		bool isOpen = currentThread->fileManage->Add(id, file, type);
@@ -349,7 +347,7 @@ void readFile()
 	// id tập tin
 	id = machine->ReadRegister(6);
 
-	buffer = new char[numByte];
+	buffer = new char[numByte + 1];
 	if (id == ConsoleOutput || id == ConsoleInput) // xử lý console
 	{
 		if (id == ConsoleInput) // không hợp lệ
@@ -374,7 +372,8 @@ void readFile()
 			delete[] buffer;
 			return;
 		}
-		bytesRead = System2User(virtAddr, bytesRead, buffer);
+		buffer[bytesRead] = '\0';
+		bytesRead = System2User(virtAddr, bytesRead + 1, buffer);
 		// trả về số byte đọc được
 		machine->WriteRegister(2, bytesRead);
 		delete[] buffer;
@@ -524,6 +523,7 @@ void seek(){
 void exec(){
 	int virtAddr;
 	char* progName;
+
 
 	//Lay ten file
 	virtAddr = machine->ReadRegister(4);
