@@ -93,6 +93,9 @@ AddrSpace::AddrSpace(OpenFile *executable)
 	//AddrSpace::pageTableManage.ExecUpdate(executable);
 	pageTable = new TranslationEntry[numPages];
 	arr = new int[numPages];
+	for (int i = 0; i < numPages; i++)
+		arr[i] = -1;
+
 	for (i = 0; i < numPages; i++) {
 		int index;
 		semAddrSpace->P();
@@ -166,11 +169,10 @@ AddrSpace::AddrSpace(OpenFile *executable)
 
 AddrSpace::~AddrSpace()
 {
-	int *temp;
-	temp = arr;
-	while (temp) {
-		AddrSpace::pageTableManage.Free(temp[0]);
-		temp++;
+	//printf("AddrSpace Delete\n");
+	for (int i = 0; i < numPages; i++) {
+		if (arr[i] >= 0)
+			AddrSpace::pageTableManage.Free(arr[i]);
 	}
    delete pageTable;
    delete[]arr;

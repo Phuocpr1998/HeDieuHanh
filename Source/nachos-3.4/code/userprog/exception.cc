@@ -190,7 +190,7 @@ char * User2System(int virtAddr, int limit)
 	if (kernelBuf == NULL)
 		return NULL;
 	memset(kernelBuf, 0, limit + 1);
-	//doc vaf copy du lieu tai dia chi virtAddr sang kernelBuff
+	//doc va copy du lieu tai dia chi virtAddr sang kernelBuff
 	for (int i = 0; i < limit; i++)
 	{
 		machine->ReadMem(virtAddr + i, 1, &oneChar);
